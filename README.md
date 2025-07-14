@@ -21,4 +21,18 @@ This is how we go from all the raw sequences that are in one big fastq.gz file t
 2. Create headings in these exact order, spelling, and capitalization:
    a.	Sample, PlateID, i7_name, i7_sequence, i5_name, i5_sequence
 3. Refer to the physical lab (or digital if they have been updated) PCR sheets and locate which i7 tagging primers were used for each library
-4. If prepared in CGMEC, refer to "2024-08-22_i5_i7_Primer-Info_corrected.xlsx" 
+4. If prepared in CGMEC at the University of Idaho, refer to [i7_primer_info.csv](utility_files/i7_primer_info.csv) under utility_files and choose the right barcode for the sequencing machine used:
+   a. NovaSeq: for i7 use the Reverse Complement
+   b. MiSeq: for i7 use the Reverse Complement
+   c. NextSeq: for i7 use the Reverse Complement
+6. If prepared in CGMEC at the University of Idaho, refer to [i5_primer_info.csv](utility_files/i5_primer_info.csv) and fill in the i5 barcode and corresponding well:
+   a. NovaSeq: for i5 use the Reverse Complement
+   b. MiSeq: for i5 use the Barcode
+   c. NextSeq: for i5 use the Barcode
+7. Save as .csv. Example:
+   | Sample | PlateID | i7_name | i7_sequence | i5_name | i5_sequence |
+   |--------|---------|---------|-------------|---------|-------------|
+   | Samp321 | Plate3 | i017 | CTCATC | A01 | CCGTTT |
+   | Samp654 | Plate3 | i017 | CTCATC | B01 | AAGAGT |
+
+
