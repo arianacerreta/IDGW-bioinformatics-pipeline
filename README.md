@@ -115,7 +115,7 @@ This is directly from [Kira Long's pipeline](https://github.com/kiralong/gtseq_r
 *This step usually goes quickly (<10 min). Double-check the output directory to see if the last sample listed in the .tsv was trimmed. For some reason, this step sometimes leaves off the last sample. If it was left off, just make a .tsv with only that sample and rerun the run_fastp.sh but direct it to the .tsv with only one sample listed.*
 
 ## 4. Reference genome
-This step is also directly based on [Kira Long's pipeline](https://github.com/kiralong/gtseq_ref_align), Step 3: Align to a reference genome. I have tried to write explicit instructions to elaborate on what Kira outline's in her pipeline to aid first-time users.
+This step is also directly based on [Kira Long's pipeline](https://github.com/kiralong/gtseq_ref_align), Step 3: Align to a reference genome. I have tried to write explicit instructions to elaborate on what Kira outlines in her pipeline to aid first-time users.
 
 ### Download your reference genome
 *If you already have the reference genome you would like to use downloaded and a reference database created, then skip to **Align Trimmed Sequences**.*
