@@ -35,4 +35,8 @@ This is how we go from all the raw sequences that are in one big fastq.gz file t
    | Samp321 | Plate3 | i017 | CTCATC | A01 | CCGTTT |
    | Samp654 | Plate3 | i017 | CTCATC | B01 | AAGAGT |
 
+### Run demultiplex code on the server
+1. Download [GTseq_BarcodeSplit_KML.py](https://github.com/kiralong/gtseq_ref_align/tree/main/Main_pipeline) from Kira Long's [gtseq_ref_align](https://github.com/kiralong/gtseq_ref_align/tree/main) pipeline. This code was modified by Kira based on [Nate Campbell's demultiplexing script](https://github.com/GTseq/GTseek_utils/blob/Main/GTseq_BarcodeSplit_MP.py)
+2. Read the details on Kira's page for further information. I have provided queue_demultiplex.sh file for you to download and edit, but you could also copy the example code from Kira's page.
+
 
