@@ -1,7 +1,7 @@
 # IDGW-bioinformatics-pipeline
 This is a repository for how to process raw genomic data from the Idaho Gray Wolf Project.
 
-## So the sequencing facility has sent you a link to your sequencing data...
+## 1. So the sequencing facility has sent you a link to your sequencing data...
 This step assumes that you already have/know how to do the following:
 - Access your institution's server
 - Log into your server account through the console or an Ubuntu shell
@@ -16,7 +16,7 @@ After logging into your server account, you will navigate into the appropriate d
 
 The files should begin downloading. Wait for this step to complete before moving on to the remaining steps.
 
-## Demultiplex the reads
+## 2. Demultiplex the reads
 This is how we go from all the raw sequences that are in one big fastq.gz file to fastq files for each well for a given plate. you will need to make a separate file that essentially outlines everything the computer will need to match up the well (e.g. A1) with the sample (e.g. Samp231) on a given plate (e.g. Plate3).
 
 ### Prepare your demultiplex file
@@ -78,4 +78,61 @@ This will increase processing speed in subsequent steps
 
 *This will take a while (about ~1.5 hours). If you are feeling ambitious, you could write some code to zip the files in parallel, but I haven't done that yet. Once/if I do, I'll update this section.*
 
+## 3. Trim Illumina adapter sequences and ployG tails
+This is directly from [Kira Long's pipeline](https://github.com/kiralong/gtseq_ref_align), Step 2: Trim and remove adaptors. I have provided detailed instructions on how implement her shell code to run this step.
 
+1. Open text editor of choice and make a name_map.tsv file with the name of each sample on a separate line. For example, Samp321.fastq.gz will become Samp321 in the list. A final format will look something like:
+
+    Samp321
+
+    Samp654
+
+    Samp987
+
+    Samp494
+
+2. Make sure to save your .tsv with Unix line endings or this step will not work!
+3. Transfer name_map.tsv to an appropriate location on your server.
+4. Make directories such as ```work_dir/trimmed_fastp/min_length_50``` for your output files
+5. Download [run_fastp.sh](https://github.com/kiralong/gtseq_ref_align/blob/main/Main_pipeline/run_fastp.sh) and place in your scripts directory
+6. Edit ```run_fastp.sh```
+
+    ```nano run_fastp.sh```
+    - Edit header for IIDS server:
+        - #SBATCH -p eight
+        - #SBATCH -C "ceph"
+        - #SBATCH -J Clu_fastp
+        - #SBATCH --cpus-per-task=16
+        - #SBATCH --mail-user email@exampleemail.edu
+        - #SBATCH --mail-type=BEGIN,END,FAIL
+    - For IIDS server add ```source /usr/modules/init/bash``` in a separate line before ```module load fastp``` in line 9
+    - Edit lines 12-14 with the appropriate directory paths
+    - If your .tsv only has one column, delete ```cut -f 2 |``` from line 18
+
+7. Save and give permissions to the shell code (```chmod 755 run_fastp.sh```)
+8. Run ```sbatch run_fastp.sh```
+
+*This step usually goes quickly (<10 min). Double-check the output directory to see if the last sample listed in the .tsv was trimmed. For some reason, this step sometimes leaves off the last sample. If it was left off, just make a .tsv with only that sample and rerun the run_fastp.sh but direct it to the .tsv with only one sample listed.*
+
+## 4. Reference genome
+This step is also directly based on [Kira Long's pipeline](https://github.com/kiralong/gtseq_ref_align), Step 3: Align to a reference genome. I have tried to write explicit instructions to elaborate on what Kira outline's in her pipeline to aid first-time users.
+
+### Download your reference genome
+*If you already have the reference genome you would like to use downloaded and a reference database created, then skip to **Align Trimmed Sequences**.*
+This example is done with the current genome we are using for the Idaho Gray Wolf Project so that future researchers and students on the project can replicate the steps.
+
+1. Go to [GenBank](https://www.ncbi.nlm.nih.gov/) and search "dog genome"
+2. Select "Genomes" and find and click on "Dog10k_Boxer_Tasha"
+3. On the row Submitted GenBank assembly find the three dots under "Actions" -> see more files on FTP -> right click on the fna.gz file -> copy link address
+4. Back in the console in the directory you would like to store your genome, use the following code:
+
+    ```wget link-from-step3```
+
+    to download the genome.
+
+5. Create a corresponding README (```nano README```) in the same folder with the following information:
+
+    - Genome used: GCA_000002285.4, Dog10K_Boxer_Tasha, submitted GenBank assembly
+    - Taxon: Canis lupus familiaris (dog)
+    - Link: https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/002.285/GCA_000002285.4_Dog10K_Boxer_Tasha/
+    - Notes: Downloaded the fna.gz
