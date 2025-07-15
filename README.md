@@ -190,6 +190,15 @@ This is where this pipeline diverges from Kira's. If you are dealing with microh
 ### Filter .bam files by mapping quality
 1. If you have >1000 .bam files, run ```ulimit -n 5000``` to increase the amount of open files you can open at once. *5000 can be replaced with any reasonable number*
 2. Make a new directory for your filtered .bam files. I recommend something like ```~/samtools_filtered_BAMS```
-3. Download [run_samtools_filter.sh](<insert link here>) and put in scripts directory
-4. 
+3. Download [run_samtools_filter.sh](https://github.com/arianacerreta/IDGW-bioinformatics-pipeline/blob/main/utility_files/run_samtools_filter.sh) and put in scripts directory
+4. Edit ```run_samtools_filter.sh```
+
+    ```nano run_samtools_filter.sh```
+    - Edit email in header
+    - Edit variable and paths in lines 17-21
+
+5. Save and give permissions, if needed (```chmod 755 run_samtools_filter.sh```)
+6. Run ```sbatch run_samtools_filter.sh```
+
+*A run of .bams from ~1000 samples took about 10 minutes. You can check the slurm record to see the progress of the run. It will update with "Finished processing SAMPLE NAME" after each sample's .bam files have been filtered.*
 
