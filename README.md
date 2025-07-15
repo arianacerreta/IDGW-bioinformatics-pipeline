@@ -185,7 +185,7 @@ This step is also directly based on [Kira Long's pipeline](https://github.com/ki
 *This step has taken about 30 minutes to run (with 24 cpus).*
 
 ## 6. Genotyping
-This is where this pipeline diverges from Kira's. If you are dealing with microhaplotypes, short indels, or positions that are highly likely to not be variable (i.e., diagnostic loci for species and you only have one species on your plates) continue with this pipeline which will use the software ```bcftools``` and ```samtools```.
+This is where this pipeline diverges from Kira's. If you are dealing with microhaplotypes, short indels, or positions that are highly likely to not be variable (i.e., diagnostic loci for species and you only have one species on your plates) continue with this pipeline which will use the software ```bcftools```, ```samtools```, and ```htslib```.
 
 ### Filter .bam files by mapping quality
 1. If you have >1000 .bam files, run ```ulimit -n 5000``` to increase the amount of open files you can open at once. *5000 can be replaced with any reasonable number*
@@ -202,3 +202,19 @@ This is where this pipeline diverges from Kira's. If you are dealing with microh
 
 *A run of .bams from ~1000 samples took about 10 minutes. You can check the slurm record to see the progress of the run. It will update with "Finished processing SAMPLE NAME" after each sample's .bam files have been filtered.*
 
+### Call genotypes using .bed file and bcftools
+1. Download [run_bcftools_call_separate.sh](https://github.com/arianacerreta/IDGW-bioinformatics-pipeline/blob/main/utility_files/run_bcftools_call_separate.sh) and place in scripts directory
+2. Create a bam_list.txt of the filtered .bam files you would like to genotype. This allows you to do a subset if needed. Don't forget to save with Unix line endings.
+3. Double check your file limit with ```ulimit -n```. Increase your limit with ```ulimit -n 5000``` if needed.
+4. Create a new directory for your bcftools runs. I recommend something like ```~/bcftools_runs```
+5. Edit ```run_bcftools_call_separate.sh```
+
+    ```nano run_bcftools_call_separate.sh```
+    - Edit email in header
+    - Edit variables and paths in lines 18-24
+    - Edit your maxDP and minBQ in lines 26-27
+
+6. Save and give permissions, if needed (```chmod 755 run_bcftools_call_separate.sh```).
+7. Run ```sbatch run_bcftools_call_separate.sh```.
+
+TO DO: Add how much time this takes to run after next tiem you run it. 
