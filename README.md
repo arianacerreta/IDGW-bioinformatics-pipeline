@@ -5,7 +5,7 @@ This is a repository for how to process raw genomic data from the Idaho Gray Wol
 This step assumes that you already have/know how to do the following:
 - Access your institution's server
 - Log into your server account through the console or an Ubuntu shell
-- Basic commands in Bash such as mkdir, cd, and how to direct to a directory
+- Basic commands in Bash such as `mkdir`, `cd`, and how to direct to a directory
 
 Otherwise, I tried to include as many details for people new to using bash in command line. If you are already comfortable working in Unix and on servers, feel free to skip those details.
 
@@ -47,15 +47,15 @@ This is how we go from all the raw sequences that are in one big fastq.gz file t
 ### Run demultiplex code on the server
 1. Download [GTseq_BarcodeSplit_KML.py](https://github.com/kiralong/gtseq_ref_align/tree/main/Main_pipeline) from Kira Long's [gtseq_ref_align](https://github.com/kiralong/gtseq_ref_align/tree/main) pipeline. This code was modified by Kira based on [Nate Campbell's demultiplexing script](https://github.com/GTseq/GTseek_utils/blob/Main/GTseq_BarcodeSplit_MP.py)
 2. Read the details on Kira's page for further information. I have provided [queue_demultiplex.sh](utility_files/queue_demultiplex.sh) file for you to download and edit, but you could also copy the example code from Kira's page.
-3. Place both the GTseq_BarcodeSplit_KML.py and queue_demultiplex.sh in your scripts directory on the server.
+3. Place both the `GTseq_BarcodeSplit_KML.py` and `queue_demultiplex.sh` in your scripts directory on the server.
 4. For the first time you are using the script, you will need to alter the permissions on the file:
    
     - In your scripts directory run: ```chmod 755 GTseq_BarcodeSplit.KML.py``` and ```chmod 755 queue_demultiplex.sh```
 
-5. Beyond that, I would recommend that you don't edit GTseq_BarcodeSplit_KML.py unless you know what you are doing. Look for updates on Kira's github.
+5. Beyond that, I would recommend that you don't edit `GTseq_BarcodeSplit_KML.py` unless you know what you are doing. Look for updates on Kira's github.
 6. Copy over the demultiplex.csv to an appropriate folder on your server account.
 7. Make an output directory called individual_fastqs (or something similar)
-8. Edit queue_demultiplex.sh:
+8. Edit `queue_demultiplex.sh`:
 
    ```nano queue_demultiplex.sh```
    
@@ -69,7 +69,7 @@ This is how we go from all the raw sequences that are in one big fastq.gz file t
 
     ```sbatch queue_demultiplex.sh```
     
-*For reference, this step has taken ~45 minutes to demultiplex a NovaSeq 6000 run with 4 plates.*
+*For reference, this step has taken ~45 minutes to demultiplex a NovaSeq run with 4 plates.*
 
 ### Zip all those individual fastqs
 This will increase processing speed in subsequent steps
@@ -112,7 +112,7 @@ This is directly from [Kira Long's pipeline](https://github.com/kiralong/gtseq_r
 7. Save and give permissions to the shell code (```chmod 755 run_fastp.sh```)
 8. Run ```sbatch run_fastp.sh```
 
-*This step usually goes quickly (<10 min). Double-check the output directory to see if the last sample listed in the .tsv was trimmed. For some reason, this step sometimes leaves off the last sample. If it was left off, just make a .tsv with only that sample and rerun the run_fastp.sh but direct it to the .tsv with only one sample listed.*
+*This step usually goes quickly (<10 min). Double-check the output directory to see if the last sample listed in the .tsv was trimmed. For some reason, this step sometimes leaves off the last sample. If it was left off, just make a .tsv with only that sample and rerun the `run_fastp.sh` but direct it to the .tsv with only one sample listed.*
 
 ## 4. Reference genome
 This step is also directly based on [Kira Long's pipeline](https://github.com/kiralong/gtseq_ref_align), Step 3: Align to a reference genome. I have tried to write explicit instructions to elaborate on what Kira outlines in her pipeline to aid first-time users.
@@ -190,7 +190,7 @@ This is where this pipeline diverges from Kira's. If you are dealing with microh
 ### Filter .bam files by mapping quality
 1. If you have >1000 .bam files, run ```ulimit -n 5000``` to increase the amount of open files you can open at once. *5000 can be replaced with any reasonable number*
 2. Make a new directory for your filtered .bam files. I recommend something like ```~/samtools_filtered_BAMS```
-3. Download [run_samtools_filter.sh](https://github.com/arianacerreta/IDGW-bioinformatics-pipeline/blob/main/utility_files/run_samtools_filter.sh) and put in scripts directory
+3. Download [run_samtools_filter.sh](utility_files/run_samtools_filter.sh) and put in scripts directory
 4. Edit ```run_samtools_filter.sh```
 
     ```nano run_samtools_filter.sh```
@@ -203,7 +203,7 @@ This is where this pipeline diverges from Kira's. If you are dealing with microh
 *A run of .bams from ~1000 samples took about 10 minutes. You can check the slurm record to see the progress of the run. It will update with "Finished processing SAMPLE NAME" after each sample's .bam files have been filtered.*
 
 ### Call genotypes using .bed file and bcftools
-1. Download [run_bcftools_call_separate.sh](https://github.com/arianacerreta/IDGW-bioinformatics-pipeline/blob/main/utility_files/run_bcftools_call_separate.sh) and place in scripts directory
+1. Download [run_bcftools_call_separate.sh](utility_files/run_bcftools_call_separate.sh) and place in scripts directory
 2. Create a bam_list.txt of the filtered .bam files you would like to genotype. This allows you to do a subset if needed. Don't forget to save with Unix line endings.
 3. Double check your file limit with ```ulimit -n```. Increase your limit with ```ulimit -n 5000``` if needed.
 4. Create a new directory for your bcftools runs. I recommend something like ```~/bcftools_runs```
@@ -220,7 +220,7 @@ This is where this pipeline diverges from Kira's. If you are dealing with microh
 TO DO: Add how much time this takes to run after next time you run it. 
 
 ### Normalize and merge individual vcfs into once big vcf
-1. Download [run_merge.sh](https://github.com/arianacerreta/IDGW-bioinformatics-pipeline/blob/main/utility_files/run_merge.sh) and place in your scripts directory
+1. Download [run_merge.sh](utility_files/run_merge.sh) and place in your scripts directory
 2. Edit ```run_merge.sh```
 
     ```nano run_merge.sh```
@@ -237,7 +237,7 @@ TO DO: Add how much time this takes to run after next time you run it.
 7. Inspect your unzipped.merged.vcf and see if all the loci and calls are to me expected. If you need to further filter your vcf by depth or to remove unnecessary loci (i.e., you had cast a wide net for an indel), move on to the other steps. Otherwise, this vcf can be used for subsequent analyses in R or other programs.
 
 ### Filter one more time (depth, remove unnecessary loci)
-1. Download [run_bcftools_filter.sh](https://github.com/arianacerreta/IDGW-bioinformatics-pipeline/tree/main/utility_files) and place in scripts directory
+1. Download [run_bcftools_filter.sh](utility_files/run_bcftools_filter.sh) and place in scripts directory
 2. If you have a list of loci to filter out, make a .txt with those positions as chr, bp and no header.
 3. Edit ```run_bcftools_filter.sh```
 
