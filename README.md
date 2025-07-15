@@ -103,7 +103,7 @@ This is directly from [Kira Long's pipeline](https://github.com/kiralong/gtseq_r
         - #SBATCH -C "ceph"
         - #SBATCH -J Clu_fastp
         - #SBATCH --cpus-per-task=16
-        - #SBATCH --mail-user email@exampleemail.edu
+        - #SBATCH --mail-user `email@exampleemail.com`
         - #SBATCH --mail-type=BEGIN,END,FAIL
     - For IIDS server add ```source /usr/modules/init/bash``` in a separate line before ```module load fastp``` in line 9
     - Edit lines 12-14 with the appropriate directory paths
@@ -147,7 +147,7 @@ This example is done with the current genome we are using for the Idaho Gray Wol
         - #SBATCH -C "ceph"
         - #SBATCH --cpus-per-task=1
         - #SBATCH -J clu_bwa_db
-        - #SBATCH --mail-user email@emailexample.edu
+        - #SBATCH --mail-user `email@emailexample.edu`
         - #SBATCH --mail-type=BEGIN,END,FAIL
     - Add ```source /usr/modules/init/bash``` after line 8 to work with IIDS servers
     - Edit lines 13-15 with your paths
@@ -174,7 +174,7 @@ This step is also directly based on [Kira Long's pipeline](https://github.com/ki
         - #SBATCH -C "ceph"
         - #SBATCH -J align_trimmed_clu_gtseq_data
         - #SBATCH --cpus-per-task=12    *I have bumped this from 12 to 24 with no issues, but double-check server resources before doing so*
-        - #SBATCH --mail-user email@emailexample.edu
+        - #SBATCH --mail-user `email@emailexample.edu`
         - #SBATCH --mail-type=BEGIN,END,FAIL
     - Add ```source /usr/modules/init/bash``` after line 9 to work with IIDS servers
     - Edit lines 14-17 with your paths
