@@ -163,7 +163,7 @@ This step is also directly based on [Kira Long's pipeline](https://github.com/ki
 
 1. Make a directory for your aligned sequences. I recommend something like:
 
-    ```~aligned/Clu10kTash_fastp_trimmed```
+    ```~/aligned/Clu10kTash_fastp_trimmed```
 
 2. Download [bwa_alignment.sh](https://github.com/kiralong/gtseq_ref_align/blob/main/Main_pipeline/bwa_alignment.sh) from Kira's github and put in your scripts directory.
 3. Edit ```bwa_alignment.sh```
@@ -183,3 +183,13 @@ This step is also directly based on [Kira Long's pipeline](https://github.com/ki
 4. Run ```sbatch bwa_alignment.sh``` in the console
 
 *This step has taken about 30 minutes to run (with 24 cpus).*
+
+## 6. Genotyping
+This is where this pipeline diverges from Kira's. If you are dealing with microhaplotypes, short indels, or positions that are highly likely to not be variable (i.e., diagnostic loci for species and you only have one species on your plates) continue with this pipeline which will use the software ```bcftools``` and ```samtools```.
+
+### Filter .bam files by mapping quality
+1. If you have >1000 .bam files, run ```ulimit -n 5000``` to increase the amount of open files you can open at once. *5000 can be replaced with any reasonable number*
+2. Make a new directory for your filtered .bam files. I recommend something like ```~/samtools_filtered_BAMS```
+3. Download [run_samtools_filter.sh](<insert link here>) and put in scripts directory
+4. 
+
