@@ -15,7 +15,7 @@ module load htslib
 #Define variables
 DP=20 #filters for a minimum depth of 20
 DIR="/path/to/normalized/merged" #path to location of normalized and merged vcf
-REMOVE="/path/to/remove_targets.txt"v#text doc of positions to remove in chr, bp with no header
+REMOVE="/path/to/remove_targets.txt" #text doc of positions to remove in chr, bp with no header
 NEWDIR="${DIR}/$(date +%y%m%d)_filtered_DP${DP}"
 
 mkdir -p ${NEWDIR}
