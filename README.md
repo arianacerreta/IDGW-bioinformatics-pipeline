@@ -173,7 +173,7 @@ This step is also directly based on [Kira Long's pipeline](https://github.com/ki
         - #SBATCH -p eight
         - #SBATCH -C "ceph"
         - #SBATCH -J align_trimmed_clu_gtseq_data
-        - #SBATCH --cpus-per-task=12    *I have bumped this from 12 to 24 with no issues, but double-check server resources before doing so*
+        - #SBATCH --cpus-per-task=12    
         - #SBATCH --mail-user `email@emailexample.edu`
         - #SBATCH --mail-type=BEGIN,END,FAIL
     - Add ```source /usr/modules/init/bash``` after line 9 to work with IIDS servers
@@ -182,7 +182,7 @@ This step is also directly based on [Kira Long's pipeline](https://github.com/ki
 
 4. Run ```sbatch bwa_alignment.sh``` in the console
 
-*This step has taken about 30 minutes to run (with 24 cpus).*
+*I have bumped cpus-per-task from 12 to 24 with no issues, but double-check server resources before doing so. This step has taken about 30 minutes to run (with 24 cpus).*
 
 ## 6. Genotyping
 This is where this pipeline diverges from Kira's. If you are dealing with microhaplotypes, short indels, or positions that are highly likely to not be variable (i.e., diagnostic loci for species and you only have one species on your plates) continue with this pipeline which will use the software ```bcftools```, ```samtools```, and ```htslib```.
