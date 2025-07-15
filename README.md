@@ -136,3 +136,24 @@ This example is done with the current genome we are using for the Idaho Gray Wol
     - Taxon: Canis lupus familiaris (dog)
     - Link: https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/002.285/GCA_000002285.4_Dog10K_Boxer_Tasha/
     - Notes: Downloaded the fna.gz
+
+### Make a reference database for genome
+1. Download [bwa_db.sh](https://github.com/kiralong/gtseq_ref_align/blob/main/Main_pipeline/bwa_db.sh)
+2. Edit bwa_db.sh
+
+    ```nano bwa_db.sh```
+    - Edit header for IIDS server:
+        - #SBATCH -p eight
+        - #SBATCH -C "ceph"
+        - #SBATCH --cpus-per-task=1
+        - #SBATCH -J clu_bwa_db
+        - #SBATCH --mail-user email@emailexample.edu
+        - #SBATCH --mail-type=BEGIN,END,FAIL
+    - Add ```source /usr/modules/init/bash``` after line 8 to work with IIDS servers
+    - Edit lines 13-15 with your paths
+    - *See Kira's github for explanation of ```$pref```*
+
+3. Save and give your script permissions (```chmod 755 bwa_db.sh```)
+4. Run ```sbatch bwa_db.sh``` in the console
+
+*This step took ~3 hours for this genome but is highly dependent on how genome size. If you would like to check on the run progress of this job, run ```squeue --me``` in the console.*
