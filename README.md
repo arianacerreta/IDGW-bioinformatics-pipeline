@@ -224,7 +224,7 @@ TO DO: Add how much time this takes to run after next time you run it.
 2. Edit ```run_merge.sh```
 
     ```nano run_merge.sh```
-    - Edit emai lin header
+    - Edit email in header
     - Edit paths in lines 17-20
 
 3. Save and give permissions, if needed (```chmod 755 run_merge.sh```)
