@@ -156,7 +156,7 @@ This example is done with the current genome we are using for the Idaho Gray Wol
 3. Save and give your script permissions (```chmod 755 bwa_db.sh```)
 4. Run ```sbatch bwa_db.sh``` in the console
 
-*This step took ~3 hours for this genome but is highly dependent on how genome size. If you would like to check on the run progress of this job, run ```squeue --me``` in the console.*
+*This step took ~3 hours for this genome but is highly dependent on genome size. If you would like to check on the run progress of this job, run ```squeue --me``` in the console.*
 
 ## 5. Align trimmed sequences 
 This step is also directly based on [Kira Long's pipeline](https://github.com/kiralong/gtseq_ref_align), Step 3: Align to a reference genome. I have tried to write explicit instructions to elaborate on what Kira outlines in her pipeline to aid first-time users.
@@ -182,7 +182,7 @@ This step is also directly based on [Kira Long's pipeline](https://github.com/ki
 
 4. Run ```sbatch bwa_alignment.sh``` in the console
 
-*I have bumped cpus-per-task from 12 to 24 with no issues, but double-check server resources before doing so. This step has taken about 30 minutes to run (with 24 cpus).*
+*I have bumped cpus-per-task from 12 to 24 with no issues, but double-check server resources before doing so. This step has taken about _ hours to run (with 24 cpus) for ~1000 samples.*
 
 ## 6. Genotyping
 This is where this pipeline diverges from Kira's. If you are dealing with microhaplotypes, short indels, or positions that are highly likely to not be variable (i.e., diagnostic loci for species and you only have one species on your plates) continue with this pipeline which will use the software ```bcftools```, ```samtools```, and ```htslib```.
@@ -205,17 +205,18 @@ This is where this pipeline diverges from Kira's. If you are dealing with microh
 ### Call genotypes using .bed file and bcftools
 1. Download [run_bcftools_call_separate.sh](utility_files/run_bcftools_call_separate.sh) and place in scripts directory
 2. Create a bam_list.txt of the filtered .bam files you would like to genotype. This allows you to do a subset if needed. Don't forget to save with Unix line endings.
-3. Double check your file limit with ```ulimit -n```. Increase your limit with ```ulimit -n 5000``` if needed.
-4. Create a new directory for your bcftools runs. I recommend something like ```~/bcftools_runs```
-5. Edit ```run_bcftools_call_separate.sh```
+3. Make a .bed file which lists all the chr, pos, pos that you would like to be called. Adaptive panel .bed files (adaptive_positions_canFam3_1.bed)[utility_files/] and (adaptive_positions_Clu10kTash.bed)[utility_files/]
+4. Double check your file limit with ```ulimit -n```. Increase your limit with ```ulimit -n 5000``` if needed.
+5. Create a new directory for your bcftools runs. I recommend something like ```~/bcftools_runs```
+6. Edit ```run_bcftools_call_separate.sh```
 
     ```nano run_bcftools_call_separate.sh```
     - Edit email in header
     - Edit variables and paths in lines 18-24
     - Edit your maxDP and minBQ in lines 26-27
 
-6. Save and give permissions, if needed (```chmod 755 run_bcftools_call_separate.sh```).
-7. Run ```sbatch run_bcftools_call_separate.sh```.
+7. Save and give permissions, if needed (```chmod 755 run_bcftools_call_separate.sh```).
+8. Run ```sbatch run_bcftools_call_separate.sh```.
 
 TO DO: Add how much time this takes to run after next time you run it. 
 
