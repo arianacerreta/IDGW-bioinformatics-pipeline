@@ -15,7 +15,7 @@ module load parallel
 
 #Define variables
 NEWDIR="/path/to/samtools_filtered_BAMS"    #new directory you created to house outputs
-MAPQ=20  #filters out everything <MAPQ
+MAPQ=20  #filters out everything <MAPQ; 20 means proability of correct alignment match is 0.99, 30 is 0.999
 OUTDIR="${NEWDIR}/$(date +%y%m%d)_MAPQ${MAPQ}_pref_plateID_fastp" #new directory within NEWDIR with current date, pref=your genome prefix
 BAMDIR="/path/to/bam_dir"
 THREADS=16 #number of threads to use; should equal cpus-per-task in header
