@@ -203,22 +203,23 @@ This is where this pipeline diverges from Kira's. If you are dealing with microh
 *A run of .bams from ~1000 samples took about 10 minutes. You can check the slurm record (```less slurm-#####.out```; to exit enter "q") to see the progress of the run. It will update with "Finished processing SAMPLE NAME" after each sample's .bam files have been filtered.*
 
 ### Call genotypes using .bed file and bcftools
-1. Download [run_bcftools_call_separate.sh](utility_files/run_bcftools_call_separate.sh) and place in scripts directory
-2. Create a bam_list.txt of the filtered .bam files you would like to genotype. This allows you to do a subset if needed. Don't forget to save with Unix line endings. One file name (e.g., i001_B04_GWAdapt7_UI1887_3E61_filtered.bam) per line.
-3. Make a .bed file which lists all the chr, pos, pos that you would like to be called. Adaptive panel .bed files: [adaptive_positions_canFam3_1.bed](utility_files/adaptive_positions_canFam3_1.bed) and [adaptive_positions_Clu10kTash.bed](utility_files/adaptive_positions_Clu10kTash.bed). Neutral panel (modified subset from this [article](https://doi.org/10.1007/s12686-023-01301-x)): tempname_canFam3_1.bed and tempname_Clu10kTash.bed.
-4. Double check your file limit with ```ulimit -n```. Increase your limit with ```ulimit -n 5000``` if needed.
-5. Create a new directory for your bcftools runs. I recommend something like ```~/bcftools_runs```
-6. Edit ```run_bcftools_call_separate.sh```
+1. Make sure your genome is unzipped. ```gzip -dk ./path/genome.fna.gz``` (You use "./" to orient to a subdirectory of your current directory)
+2. Download [run_bcftools_call_separate.sh](utility_files/run_bcftools_call_separate.sh) and place in scripts directory
+3. Create a bam_list.txt of the filtered .bam files you would like to genotype. This allows you to do a subset if needed. Don't forget to save with Unix line endings. One file name (e.g., i001_B04_GWAdapt7_UI1887_3E61_filtered.bam) per line.
+4. Make a .bed file which lists all the chr, pos, pos that you would like to be called. Adaptive panel .bed files: [adaptive_positions_canFam3_1.bed](utility_files/adaptive_positions_canFam3_1.bed) and [adaptive_positions_Clu10kTash.bed](utility_files/adaptive_positions_Clu10kTash.bed). Neutral panel (modified subset from this [article](https://doi.org/10.1007/s12686-023-01301-x)): tempname_canFam3_1.bed and tempname_Clu10kTash.bed.
+5. Double check your file limit with ```ulimit -n```. Increase your limit with ```ulimit -n 5000``` if needed.
+6. Create a new directory for your bcftools runs. I recommend something like ```~/bcftools_runs```
+7. Edit ```run_bcftools_call_separate.sh```
 
     ```nano run_bcftools_call_separate.sh```
     - Edit email in header
     - Edit variables and paths in lines 18-24
     - Edit your maxDP and minBQ in lines 26-27
 
-7. Save and give permissions, if needed (```chmod 755 run_bcftools_call_separate.sh```).
-8. Run ```sbatch run_bcftools_call_separate.sh```.
+8. Save and give permissions, if needed (```chmod 755 run_bcftools_call_separate.sh```).
+9. Run ```sbatch run_bcftools_call_separate.sh```.
 
-TO DO: Add how much time this takes to run after next time you run it. 
+Indexing took 23 minutes for ~1000 samples. 
 
 ### Normalize and merge individual vcfs into once big vcf
 1. Download [run_merge.sh](utility_files/run_merge.sh) and place in your scripts directory
