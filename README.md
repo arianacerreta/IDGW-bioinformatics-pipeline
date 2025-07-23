@@ -204,7 +204,7 @@ This is where this pipeline diverges from Kira's. If you are dealing with microh
 
 ### Call genotypes using .bed file and bcftools
 1. Download [run_bcftools_call_separate.sh](utility_files/run_bcftools_call_separate.sh) and place in scripts directory
-2. Create a bam_list.txt of the filtered .bam files you would like to genotype. This allows you to do a subset if needed. Don't forget to save with Unix line endings.
+2. Create a bam_list.txt of the filtered .bam files you would like to genotype. This allows you to do a subset if needed. Don't forget to save with Unix line endings. One file name (e.g., i001_B04_GWAdapt7_UI1887_3E61_filtered.bam) per line.
 3. Make a .bed file which lists all the chr, pos, pos that you would like to be called. Adaptive panel .bed files: [adaptive_positions_canFam3_1.bed](utility_files/adaptive_positions_canFam3_1.bed) and [adaptive_positions_Clu10kTash.bed](utility_files/adaptive_positions_Clu10kTash.bed). Neutral panel (modified subset from this [article](https://doi.org/10.1007/s12686-023-01301-x)): tempname_canFam3_1.bed and tempname_Clu10kTash.bed.
 4. Double check your file limit with ```ulimit -n```. Increase your limit with ```ulimit -n 5000``` if needed.
 5. Create a new directory for your bcftools runs. I recommend something like ```~/bcftools_runs```
