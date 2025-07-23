@@ -200,7 +200,7 @@ This is where this pipeline diverges from Kira's. If you are dealing with microh
 5. Save and give permissions, if needed (```chmod 755 run_samtools_filter.sh```)
 6. Run ```sbatch run_samtools_filter.sh```
 
-*A run of .bams from ~1000 samples took about 10 minutes. You can check the slurm record to see the progress of the run. It will update with "Finished processing SAMPLE NAME" after each sample's .bam files have been filtered.*
+*A run of .bams from ~1000 samples took about 10 minutes. You can check the slurm record (```less slurm-#####.out```; to exit enter "q") to see the progress of the run. It will update with "Finished processing SAMPLE NAME" after each sample's .bam files have been filtered.*
 
 ### Call genotypes using .bed file and bcftools
 1. Download [run_bcftools_call_separate.sh](utility_files/run_bcftools_call_separate.sh) and place in scripts directory
