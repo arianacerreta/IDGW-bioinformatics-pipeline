@@ -182,7 +182,7 @@ This step is also directly based on [Kira Long's pipeline](https://github.com/ki
 
 4. Run ```sbatch bwa_alignment.sh``` in the console
 
-*I have bumped cpus-per-task from 12 to 24 with no issues, but double-check server resources before doing so. This step has taken about _ hours to run (with 24 cpus) for ~1000 samples.*
+*I have bumped cpus-per-task from 12 to 24 with no issues, but double-check server resources before doing so. This step has taken about 8 hours to run (with 12 cpus) for ~1000 samples.*
 
 ## 6. Genotyping
 This is where this pipeline diverges from Kira's. If you are dealing with microhaplotypes, short indels, or positions that are highly likely to not be variable (i.e., diagnostic loci for species and you only have one species on your plates) continue with this pipeline which will use the software ```bcftools```, ```samtools```, and ```htslib```.
