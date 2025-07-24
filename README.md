@@ -237,7 +237,7 @@ This is where this pipeline diverges from Kira's. If you are dealing with microh
 
 6. After the run has completed, direct to the merged directory and run ```module load htslib```
 7. Unzip the vcf with ```bgzip -c -d merged.vcf.gz > unzipped.merged.vcf```
-8. Inspect your unzipped.merged.vcf and see if all the loci and calls are to me expected. If you need to further filter your vcf by depth or to remove unnecessary loci (i.e., you had cast a wide net for an indel), move on to the other steps. Otherwise, this vcf can be used for subsequent analyses in R or other programs.
+8. Inspect your unzipped.merged.vcf and see if all the loci and calls are expected. If you need to further filter your vcf by depth, to remove unnecessary loci (i.e., you had cast a wide net for an indel), or remove alternate alleles,nano move on to the other steps. Otherwise, this vcf can be used for subsequent analyses in R or other programs.
 
 ### Filter one more time (depth, remove unnecessary loci)
 1. Download [run_bcftools_filter.sh](utility_files/run_bcftools_filter.sh) and place in scripts directory
@@ -254,4 +254,4 @@ This is where this pipeline diverges from Kira's. If you are dealing with microh
 
 TO DO: add estimate time to run after next time you run it
 
-*This is currently the final step on the server. You can use the final_filtered_unzipped.vcf for R and other programs.*
+*This should happen really fast (<2 min). This is currently the final step on the server. You can use the final_filtered_unzipped.vcf for R and other programs.*
