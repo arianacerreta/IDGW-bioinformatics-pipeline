@@ -222,21 +222,22 @@ This is where this pipeline diverges from Kira's. If you are dealing with microh
 *This step most recently took 6 hours for ~1000 samples with CanFam3.1*
 
 ### Normalize and merge individual vcfs into once big vcf
-1. Download [run_merge.sh](utility_files/run_merge.sh) and place in your scripts directory
-2. Edit ```run_merge.sh```
+1. Double check you have your file open limit high enough. ```ulimit -n 5000```
+2. Download [run_merge.sh](utility_files/run_merge.sh) and place in your scripts directory
+3. Edit ```run_merge.sh```
 
     ```nano run_merge.sh```
     - Edit email in header
     - Edit paths in lines 17-20
 
-3. Save and give permissions, if needed (```chmod 755 run_merge.sh```)
-4. Run ```sbatch run_merge.sh```
+4. Save and give permissions, if needed (```chmod 755 run_merge.sh```)
+5. Run ```sbatch run_merge.sh```
 
 TO DO: Add how much time this takes to run after next time you run it.
 
-5. After the run has completed, direct to the merged directory and run ```module load htslib```
-6. Unzip the vcf with ```bgzip -c -d merged.vcf.gz > unzipped.merged.vcf```
-7. Inspect your unzipped.merged.vcf and see if all the loci and calls are to me expected. If you need to further filter your vcf by depth or to remove unnecessary loci (i.e., you had cast a wide net for an indel), move on to the other steps. Otherwise, this vcf can be used for subsequent analyses in R or other programs.
+6. After the run has completed, direct to the merged directory and run ```module load htslib```
+7. Unzip the vcf with ```bgzip -c -d merged.vcf.gz > unzipped.merged.vcf```
+8. Inspect your unzipped.merged.vcf and see if all the loci and calls are to me expected. If you need to further filter your vcf by depth or to remove unnecessary loci (i.e., you had cast a wide net for an indel), move on to the other steps. Otherwise, this vcf can be used for subsequent analyses in R or other programs.
 
 ### Filter one more time (depth, remove unnecessary loci)
 1. Download [run_bcftools_filter.sh](utility_files/run_bcftools_filter.sh) and place in scripts directory
@@ -248,8 +249,8 @@ TO DO: Add how much time this takes to run after next time you run it.
     - Edit variables and paths in lines 16-19; DP is depth per locus for each individual
     - If you are not using remove_targets.txt with a list of targets to remove, then you should add "#" in front of line 18 and 31
 
-4. Save and give permissions, if needed (```chmod 755 run_merge.sh```)
-5. Run ```sbatch run_merge.sh```
+4. Save and give permissions, if needed (```chmod 755 run_bcftools_filter.sh```)
+5. Run ```sbatch run_bcftools_filter.sh```
 
 TO DO: add estimate time to run after next time you run it
 
