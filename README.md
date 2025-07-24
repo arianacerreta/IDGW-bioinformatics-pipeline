@@ -247,11 +247,9 @@ This is where this pipeline diverges from Kira's. If you are dealing with microh
     ```nano run_bcftools_filter.sh```
     - Edit email in header
     - Edit variables and paths in lines 16-19; DP is depth per locus for each individual
-    - If you are not using remove_targets.txt with a list of targets to remove, then you should add "#" in front of line 18 and 31
+    - If you are not using remove_targets.txt with a list of targets to remove, then you should use this simpler shell code [run_bcftools_filter_simple.sh](utility_files/run_bcftools_filter.sh)
 
 4. Save and give permissions, if needed (```chmod 755 run_bcftools_filter.sh```)
 5. Run ```sbatch run_bcftools_filter.sh```
-
-TO DO: add estimate time to run after next time you run it
 
 *This should happen really fast (<2 min). This is currently the final step on the server. You can use the final_filtered_unzipped.vcf for R and other programs.*
