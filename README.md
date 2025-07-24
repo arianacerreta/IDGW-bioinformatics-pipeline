@@ -219,7 +219,7 @@ This is where this pipeline diverges from Kira's. If you are dealing with microh
 8. Save and give permissions, if needed (```chmod 755 run_bcftools_call_separate.sh```).
 9. Run ```sbatch run_bcftools_call_separate.sh```.
 
-Indexing took 23 minutes for ~1000 samples. 
+*This step most recently took 6 hours for ~1000 samples with CanFam3.1*
 
 ### Normalize and merge individual vcfs into once big vcf
 1. Download [run_merge.sh](utility_files/run_merge.sh) and place in your scripts directory
