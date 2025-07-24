@@ -19,14 +19,19 @@ DIR="/path/to/individual_vcfs" #path to all the vcfs you would like to merge
 NORMDIR="${DIR}/normalized" #new directory; if you don't want it nested as a subdirectly, specific path wanted
 NEWDIR="${NORMDIR}/merged"
 
-#make NORMDIR
+#make new directories
 mkdir -p "$NORMDIR"
+mkdir -p "$NEWDIR"
 
-#normalize VCFs
+#sort then normalize VCFs
 for VCF in "$DIR"/*.vcf; do
         SAMPLE=$(basename "$VCF" .vcf) #extract sample name from file
+        
+        # Sort VCF
+        bcftools sort "$VCF" -o "$NORMDIR/${SAMPLE}_sorted.vcf"
 
-        bcftools norm -m +any -f "$REF" -o "$NORMDIR/${SAMPLE}_norm.vcf" "$VCF"
+        #normalize VCF
+        bcftools norm -m +any -f "$REF" -o "$NORMDIR/${SAMPLE}_norm.vcf" "$NORMDIR/${SAMPLE}_sorted.vcf"
 
         #Compress VCF
         bgzip -f "$NORMDIR/${SAMPLE}_norm.vcf"
@@ -36,9 +41,6 @@ for VCF in "$DIR"/*.vcf; do
 
         echo "Finished processing $SAMPLE"
 done
-
-#make NEWDIR and list in NEWDIR
-mkdir -p "$NEWDIR"
 
 # List VCF files and check if files exist
 find "$NORMDIR" -name "*_norm.vcf.gz" > "$NEWDIR/vcf_list.txt"
