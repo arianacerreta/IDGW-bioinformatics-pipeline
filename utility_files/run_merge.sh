@@ -15,7 +15,7 @@ module load htslib
 
 #Define variables
 REF="/path/to/genome/GCA_00000####.fna"  #Path to reference genome (.fasta or .fna)
-DIR="/path/to/individual_vcfs" #path to all the bcfs you would like to merge
+DIR="/path/to/individual_vcfs" #path to all the vcfs you would like to merge
 NORMDIR="${DIR}/normalized" #new directory
 NEWDIR="${NORMDIR}/merged"
 
