@@ -233,7 +233,7 @@ This is where this pipeline diverges from Kira's. If you are dealing with microh
 4. Save and give permissions, if needed (```chmod 755 run_merge.sh```)
 5. Run ```sbatch run_merge.sh```
 
-TO DO: Add how much time this takes to run after next time you run it.
+*This took about 15 minutes to run to merge ~1000 vcfs*
 
 6. After the run has completed, direct to the merged directory and run ```module load htslib```
 7. Unzip the vcf with ```bgzip -c -d merged.vcf.gz > unzipped.merged.vcf```
