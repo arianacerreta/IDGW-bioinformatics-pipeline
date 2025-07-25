@@ -253,3 +253,9 @@ This is where this pipeline diverges from Kira's. If you are dealing with microh
 5. Run ```sbatch run_bcftools_filter.sh```
 
 *This should happen really fast (<2 min). This is currently the final step on the server. You can use the final_filtered_unzipped.vcf for R and other programs.*
+
+# Final filtering and error rates in R
+
+## 1. Download and install SNPfiltR[SNPfiltR](https://devonderaad.github.io/SNPfiltR/) (DeRaad 2022)
+1. You can use this install_SNPfiltR.R[install_SNPfiltR.R](utility_files/R_code/install_SNPfiltR.R) code to help install this package. You can also refer to the package's github linked above.
+
