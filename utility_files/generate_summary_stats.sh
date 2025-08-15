@@ -49,8 +49,8 @@ ls *.bam | parallel -j "$THREADS" '
 
     #mean MAPQ for reads with MAPQ >=30
     samtools view -q 30 -F 0x904 {} | \
-    awk "{sum+=$5; n++} END {if (n>0) print \"%0.2f\", sum/n; else print printf \"NA\"}" > tmp_q30.txt
-
+    awk "{sum+=\$5; n++} END {if (n>0) printf \"%0.2f\", sum/n; else printf \"NA\"}" > tmp_q30.txt
+q
     echo -e "${SAMPLE}\t$(cat tmp_all.txt)\t$(cat tmp_q30.txt)"
  ' >> "$OUTDIR/mean_mapq.tsv"
 
