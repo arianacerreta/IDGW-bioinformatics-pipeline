@@ -14,7 +14,7 @@ module load bcftools
 module load samtools
 
 #Define variables
-MERGED="path/to/merged.vcf.gz"
+MERGED="/path/to/merged.vcf.gz"
 BAMDIR="/path/to/bam_dir"
 TARGETS_BED="path/to/bedfile.bed" #BED file with aplicon target regions
 THREADS=16 #number of threads to use; should equal cpus-per-task in header
