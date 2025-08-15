@@ -20,7 +20,7 @@ TARGETS_BED="path/to/bedfile.bed" #BED file with aplicon target regions
 THREADS=16 #number of threads to use; should equal cpus-per-task in header
 
 #Create output directory
-OUTDIR="path/to/output/directory/$(date +%y%m%d)_run_stats" #where you want your output directory created
+OUTDIR="/path/to/output/directory/$(date +%y%m%d)_run_stats" #where you want your output directory created
 mkdir -p "$OUTDIR"
 
 #1 calculate and output depth per locus
