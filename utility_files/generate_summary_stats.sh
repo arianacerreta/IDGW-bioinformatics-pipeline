@@ -33,29 +33,44 @@ bcftools query -f '[%SAMPLE\t%GT\n]' "$MERGED" | \
 awk '$2 != "./." { count[$1]++ } END { for (s in count) print s, count[s] }' \
 > "$OUTDIR/completeness_per_sample.tsv"
 
-# 3 mapping quality per sample
+# 3. Mapping quality per sample
 echo "Calculating mean mapping quality per sample..."
 
 cd "$BAMDIR" || exit 1
 
+# Output file for mean MAPQ
 echo -e "Sample\tMean_MAPQ_AllReads\tMean_MAPQ_Q30" > "$OUTDIR/mean_mapq.tsv"
 
+# Output file for histogram counts
+hist_counts="$OUTDIR/mapq_histogram_counts.tsv"
+> "$hist_counts"  # clear file
+
+# Loop through BAMs in parallel
 ls *.bam | parallel -j "$THREADS" '
     SAMPLE=$(basename {} .bam)
 
-   #mean MAPQ across all reads (no filtering)
-   samtools view -F 0x904 {} | \
-   awk "{sum+=\$5; n++} END {if (n>0) printf \"%0.2f\", sum/n; else printf \"NA\"}" > tmp_all.txt
+    tmp_mean_all="tmp_mean_all_${SAMPLE}.txt"
+    tmp_mean_q30="tmp_mean_q30_${SAMPLE}.txt"
+    tmp_hist="tmp_hist_${SAMPLE}.tsv"
 
-    #mean MAPQ for reads with MAPQ >=30
-    samtools view -q 30 -F 0x904 {} | \
-    awk "{sum+=\$5; n++} END {if (n>0) printf \"%0.2f\", sum/n; else printf \"NA\"}" > tmp_q30.txt
-q
-    echo -e "${SAMPLE}\t$(cat tmp_all.txt)\t$(cat tmp_q30.txt)"
- ' >> "$OUTDIR/mean_mapq.tsv"
+    # Mean MAPQ across all aligned reads
+    samtools view -F 0x904 {} | awk '\''{sum+=$5; n++} END {if(n>0) printf "%.2f\n", sum/n; else print "NA"}'\'' > $tmp_mean_all
 
-rm -f tmp_all.txt tmp_q30.txt
+    # Mean MAPQ for reads with MAPQ >=30
+    samtools view -q 30 -F 0x904 {} | awk '\''{sum+=$5; n++} END {if(n>0) printf "%.2f\n", sum/n; else print "NA"}'\'' > $tmp_mean_q30
 
+    # Histogram counts for all reads
+    samtools view -F 0x904 {} | awk '\''{count[$5]++} END {for(val in count) print val, count[val]}'\'' > $tmp_hist
+
+    # Append mean values to mean_mapq.tsv
+    echo -e "${SAMPLE}\t$(cat $tmp_mean_all)\t$(cat $tmp_mean_q30)" >> '"$OUTDIR"'/mean_mapq.tsv
+
+    # Append histogram counts to mapq_histogram_counts.tsv
+    awk -v s="$SAMPLE" '\''{print s"\t"$1"\t"$2}'\'' $tmp_hist >> '"$hist_counts"'
+
+    # Clean up temp files
+    rm -f $tmp_mean_all $tmp_mean_q30 $tmp_hist
+'
 # Percent reads mapping to target regions
 echo "Calculating % reads on target..."
 echo -e "Sample\tTotal_Reads\tReads_on_Target\tPercent_on_Target" > "$OUTDIR/reads_on_target.tsv"
