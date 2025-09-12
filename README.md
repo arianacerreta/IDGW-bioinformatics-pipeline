@@ -185,6 +185,27 @@ This step is also directly based on [Kira Long's pipeline](https://github.com/ki
 *I have bumped cpus-per-task from 12 to 24 with no issues, but double-check server resources before doing so. This step has taken about 8 hours to run (with 12 cpus) for ~1000 samples.*
 
 ## 6. Genotyping
+### RG headers, sort, and index
+Add RG headers to your .bam files and then sort and index them for subsequent steps using GATK. GATK will not work if you do not do this. This step will be highly dependent on your naming convention. I have included the shell code for the different sample pipelines we have used with the IDGW project thus far. GWAdapt (RG_sort_index.sh); Fecal Neutral 200 loci (RG_sort_index_fecal.sh); IDFG dogs (tbd); Neutral Tissue (tbd); IDFG Eagle Labs (tbd)
+1. Download appropriate shell code and put in scripts directory.
+2. Make a new directory for your .bams for this step. I recommed something like ```~/RG_aligned_sorted_Clu10kTash```
+3. Edit correspond shell code for the appropriate samples.
+
+   ```nano RG_sort_index.sh```
+   - Edit email in header
+   - Edit variables and paths in lines 14-15
+
+4. Save and give permissions, if needed (```chmod 755 RG_sort_index.sh```)
+5. Run ```sbatch RG_sort_index.sh```.
+
+Then do base recalibration, you will need "known, confident SNPs" in a list to run this code.
+run_BQSR.sh
+
+call variants with Haplotype Caller run_GATK.sh
+ combine variants into one .vcf final_GATK.sh
+ summary stats generate_summary_stats.sh
+ 
+## 6.5 Old Genotyping Pipeline
 This is where this pipeline diverges from Kira's. If you are dealing with microhaplotypes, short indels, or positions that are highly likely to not be variable (i.e., diagnostic loci for species and you only have one species on your plates) continue with this pipeline which will use the software ```bcftools```, ```samtools```, and ```htslib```.
 
 ### Filter .bam files by mapping quality
