@@ -186,7 +186,7 @@ This step is also directly based on [Kira Long's pipeline](https://github.com/ki
 
 ## 6. Genotyping
 ### RG headers, sort, and index
-Add RG headers to your .bam files and then sort and index them for subsequent steps using GATK. GATK will not work if you do not do this. This step will be highly dependent on your naming convention. I have included the shell code for the different sample pipelines we have used with the IDGW project thus far. GWAdapt (RG_sort_index.sh); Fecal Neutral 200 loci (RG_sort_index_fecal.sh); IDFG dogs (tbd); Neutral Tissue (tbd); IDFG Eagle Labs (tbd)
+Add RG headers to your .bam files and then sort and index them for subsequent steps using GATK. GATK will not work if you do not do this. This step will be highly dependent on your naming convention. I have included the shell code for the different sample pipelines we have used with the IDGW project thus far. GWAdapt (RG_sort_index.sh); Fecal Neutral 200 loci (RG_sort_index_fecal.sh); IDFGdata (RG_sort_index_IDFGdata.sh); Neutral Tissue (RG_sort_index_NeutralTissue.sh)
 1. Download appropriate shell code and put in scripts directory.
 2. Make a new directory for your .bams for this step. I recommed something like ```~/RG_aligned_sorted_Clu10kTash```
 3. Edit correspond shell code for the appropriate samples.
@@ -199,7 +199,16 @@ Add RG headers to your .bam files and then sort and index them for subsequent st
 5. Run ```sbatch RG_sort_index.sh```.
 
 Then do base recalibration, you will need "known, confident SNPs" in a list to run this code.
-run_BQSR.sh
+1. Download the corresponding VCF file and corresponding .tbi file. Make sure the .tbi file is in the same directory as the VCF. GWAdapt (vcf); Neutral 200 loci (Clu10kTash: known_sites.sitesonly.Clu10kTash.vcf.gz and known_sites.sitesonly.Clu10kTash.vcf.gz.tbi; CanFam3.1: known_sitesonly.CanFam3_1.vcf.gz and ___)
+2. Download run_BQSR.sh and make a new directory for your recalibrated .bams. I recommend making sure it is not nested in your previous folder.
+3. Edit correspond shell code for the following:
+
+   ```nano run_BQSR.sh```
+   -Edit email in header
+   -Edit variables and paths in lines 14-18
+
+4. Save and give permissions, if needed (```chmod 755 run_BQSR.sh```)
+5. Run ```sbatch run_BQSR.sh```
 
 call variants with Haplotype Caller run_GATK.sh
  combine variants into one .vcf final_GATK.sh
