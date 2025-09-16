@@ -31,7 +31,7 @@ ls *.bam | parallel --env THREADS_PER_JOB,OUTDIR -j "$JOBS" "
             index=\$(echo \$SAMPLE | cut -d'_' -f1)
             well=\$(echo \$SAMPLE | cut -d'_' -f2)
             lib=\$(echo \$SAMPLE | cut -d'_' -f5)
-            sm=\$(echo \$SAMPLE | awk -F'_' -f6)
+            sm=\$(echo \$SAMPLE | cut -d'_' -f6)
             rg=\"@RG\\tID:\${index}_\${well}_\${sm}\\tSM:\${sm}\\tLB:\${lib}\\tPL:ILLUMINA\\tPU:\${index}_\${well}\"
             ;;
         *)
