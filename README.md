@@ -186,7 +186,7 @@ This step is also directly based on [Kira Long's pipeline](https://github.com/ki
 
 ## 6. Genotyping
 ### RG headers, sort, and index
-Add RG headers to your .bam files and then sort and index them for subsequent steps using GATK. GATK will not work if you do not do this. This step will be highly dependent on your naming convention. I have included the shell code for the different sample pipelines we have used with the IDGW project thus far. GWAdapt (RG_sort_index.sh); Fecal Neutral 200 loci (RG_sort_index_fecal.sh); IDFGdata (RG_sort_index_IDFGdata.sh); Neutral Tissue (RG_sort_index_NeutralTissue.sh)
+Add RG headers to your .bam files and then sort and index them for subsequent steps using GATK. GATK will not work if you do not do this. This step will be highly dependent on your naming convention. I have included the shell code for the different sample pipelines we have used with the IDGW project thus far. GWAdapt ([RG_sort_index.sh](project-specific_files/RG_sort_index.sh)); Fecal Neutral 200 loci ([RG_sort_index_fecal.sh](project-specific_files/RG_sort_index_fecal.sh)); IDFGdata ([RG_sort_index_IDFGdata.sh](project-specific_files/RG_sort_index_IDFGdata.sh)); Neutral Tissue ([RG_sort_index_NeutralTissue.sh](project-specific_files/RG_sort_index_NeutralTissue.sh))
 1. Download appropriate shell code and put in scripts directory.
 2. Make a new directory for your .bams for this step. I recommed something like ```~/RG_aligned_sorted_Clu10kTash```
 3. Edit correspond shell code for the appropriate samples.
@@ -198,21 +198,27 @@ Add RG headers to your .bam files and then sort and index them for subsequent st
 4. Save and give permissions, if needed (```chmod 755 RG_sort_index.sh```)
 5. Run ```sbatch RG_sort_index.sh```.
 
-Then do base recalibration, you will need "known, confident SNPs" in a list to run this code.
+### Base recalibration
+This recalibrates the base quality scores using known, confident SNPs. Since we run amplicon panels, these are the literature referenced SNPs for the GWAdapt Panel and the known variants fromt the Neutral Panel. The VCFs need to match the alignment you are using.
+
 1. Download the corresponding VCF file and corresponding .tbi file. Make sure the .tbi file is in the same directory as the VCF. GWAdapt (vcf); Neutral 200 loci (Clu10kTash: known_sites.sitesonly.Clu10kTash.vcf.gz and known_sites.sitesonly.Clu10kTash.vcf.gz.tbi; CanFam3.1: known_sitesonly.CanFam3_1.vcf.gz and ___)
-2. Download run_BQSR.sh and make a new directory for your recalibrated .bams. I recommend making sure it is not nested in your previous folder.
+2. Download [run_BQSR.sh](utility_files/run_BQSR.sh) and make a new directory for your recalibrated .bams. I recommend making sure it is not nested in your previous folder.
 3. Edit correspond shell code for the following:
 
    ```nano run_BQSR.sh```
-   -Edit email in header
-   -Edit variables and paths in lines 14-18
+   - Edit email in header
+   - Edit variables and paths in lines 14-18
 
 4. Save and give permissions, if needed (```chmod 755 run_BQSR.sh```)
 5. Run ```sbatch run_BQSR.sh```
 
-call variants with Haplotype Caller run_GATK.sh
+### Call variants with Haplotype Caller 
+The following setion will call each of your recalibrate .bams seperately using your reference genome. It will then combine them into a final VCF.
+run_GATK.sh
  combine variants into one .vcf final_GATK.sh
- summary stats generate_summary_stats.sh
+ 
+## 7 Generating panel summary stats
+summary stats generate_summary_stats.sh
  
 ## 6.5 Old Genotyping Pipeline
 This is where this pipeline diverges from Kira's. If you are dealing with microhaplotypes, short indels, or positions that are highly likely to not be variable (i.e., diagnostic loci for species and you only have one species on your plates) continue with this pipeline which will use the software ```bcftools```, ```samtools```, and ```htslib```.
