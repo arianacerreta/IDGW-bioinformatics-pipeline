@@ -244,7 +244,7 @@ The optional edits control how many threads and how much memory the job is reque
 3. Run ```sbatch run_GATK.sh```
 
 #### Combine all individuals into "final" vcf
-We will do more filtering in R later.
+We will do more filtering in R later, so this is the final vcf produced on the server.
 
 1. Download [final_GATK.sh](utility_files/final_GATK.sh) and edit the following:
 
@@ -252,13 +252,13 @@ We will do more filtering in R later.
    - Edit email in header
    - Edit paths and variables
    - Edit the path in line 24. This should go to a non-existent folder (this function will make the directory) called "genomics_db." IMPORTANT: if this folder already exists, the code will fail. If you have to restart this code and the folder was created during the previous run, you should delete the old folder and start over
-   - Edit line 36 to match line 24's path. Key things: 1) no quotation marks, 2) it has to start with ```gendb:///``` followed by the path, 3) make sure there are three "/" following the colon before the name of the first directory in your path.
+   - Edit line 36 to match line 24's path. Key things: 1) no quotation marks, 2) it has to start with ```gendb:///``` followed by the path, 3) make sure there are 3 "/" following the colon before the name of the first directory in your path.
    - Optional: edit ```--cpus-per-task``` and ```--mem``` in header, ```-Xmx##G``` (lines 23 & 34), ```--batch-size``` (line 25), and ```--reader-threads``` (line 30)
   
 The optional edits control how many threads and how much memory the job is requesting. I currently have it set a the max that I would do comfortably on the UI servers. These setting allowed ~1000 samples to run in ### hours. IMPORTANT: if several nodes are being used on the server (check with ```squeue``` and ```sinfo -s```) then you may want to lower your requests. The tradeoff is that your job will run slower, but won't be stuck in a queue waiting for resources.
 
-
-combine variants into one .vcf final_GATK.sh
+2. Save and give permissions, if needed (```chmod 755 fianl_GATK.sh```)
+3. Run ```sbatch final_GATK.sh```
  
 ## 7 Generating panel summary stats
 summary stats generate_summary_stats.sh
