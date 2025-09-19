@@ -212,9 +212,25 @@ This recalibrates the base quality scores using known, confident SNPs. Since we 
 4. Save and give permissions, if needed (```chmod 755 run_BQSR.sh```)
 5. Run ```sbatch run_BQSR.sh```
 
+#### Optional:
+#### Evaluate whether base recalibration worked
+
+1. Download [evaluate_BQSR.sh](utility_files/evaluate_BQSR.sh) and edit the following:
+
+   ```nano evaluate_BQSR.sh```
+   - Edit email in header
+   - Edit paths and variables in lines 15-22
+   - Edit "user" or adjust path in line 24
+
+2. Save and give permissions, if needed (```chmod 755 evaluate_BQSR.sh```)
+3. Run ```sbatch evaluate_BQSR.sh```
+
+This only looks at the first 8 samples so that you can inspect whether BQSR had any effect. With the small number of loci we are using, this step usually doesnt do much but won't hurt downstream processes and is recommended by GATK Best Practices when possible. For organisms without verified variants, you might not be able to use BQSR at all.
+
 ### Call variants with Haplotype Caller 
 The following setion will call each of your recalibrate .bams seperately using your reference genome. It will then combine them into a final VCF.
-run_GATK.sh
+
+1. Download [run_GATK.sh](utility_files/run_GATK.sh) and edit the following
  combine variants into one .vcf final_GATK.sh
  
 ## 7 Generating panel summary stats
