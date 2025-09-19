@@ -228,7 +228,7 @@ This recalibrates the base quality scores using known, confident SNPs. Since we 
 This only looks at the first 8 samples so that you can inspect whether BQSR had any effect. With the small number of loci we are using, this step usually doesnt do much but won't hurt downstream processes and is recommended by GATK Best Practices when possible. For organisms without verified variants, you might not be able to use BQSR at all.
 
 ### Call variants with Haplotype Caller 
-The following setion will call each of your recalibrate .bams seperately using your reference genome. It will then combine them into a final VCF.
+The following setion will call each of your recalibrate .bams separately using your reference genome. It will then combine them into a final VCF.
 
 #### Call samples individually
 1. Download [run_GATK.sh](utility_files/run_GATK.sh) and edit the following:
