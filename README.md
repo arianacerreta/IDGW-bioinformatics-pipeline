@@ -237,7 +237,7 @@ The following setion will call each of your recalibrate .bams seperately using y
    - Edit paths and variables in lines 15-19
    - Optional: edit --cpus-per-task and --mem, THREADS (line 19), -Xmx##G (line 36), and --native-pair-hmm-threads (line 44)
 
-The optional edits control how many threads and how much memory the job is requesting. I currently have it set a the max that I would do comfortably on the UI servers. These setting allowed ~1000 samples to run in ~1.5 hours. IMPORTANT: if several nodes are being used on the server (check with ```squeue```` and ```sinfo -s```) then you may want to lower your requests. The tradeoff is that your job will run slower, but won't be stuck in a queue waiting for resources.
+The optional edits control how many threads and how much memory the job is requesting. I currently have it set a the max that I would do comfortably on the UI servers. These setting allowed ~1000 samples to run in ~1.5 hours. IMPORTANT: if several nodes are being used on the server (check with ```squeue``` and ```sinfo -s```) then you may want to lower your requests. The tradeoff is that your job will run slower, but won't be stuck in a queue waiting for resources.
  
 2. Save and give permissions, if needed (```chmod 755 run_GATK.sh```)
 3. Run ```sbatch run_GATK.sh```
@@ -246,7 +246,16 @@ combine variants into one .vcf final_GATK.sh
  
 ## 7 Generating panel summary stats
 summary stats generate_summary_stats.sh
- 
+
+# HELP! My jobs keep failing!
+1. Check your paths and variables
+2. Make sure any input .txt, .tsv, .bed, or other files were saved with Unix line endings
+3. Check your slurm output file for any errors ```less slurm-<jobID>.out```. These are located in the folder that you ran your code in. For instance, I always run my code out of my "scripts" directory so that I can always find the corresponding log file for the job. The SLURM scheduler uses the following nomenclature: slurm-<jobID>.out (e.g. job 5063360 should automatically have slurm-5063360.out.)
+   - HELP! There was no slurm-<jobID>.out file written: 1) Double check you are looking in the right directory, 2) If you are sure a .out was not written, check to see that the job is/is not running (```squeue --me```), 3) If the job is running (often indefinitely without finishing) and there is no .out, it is possible that your job was assigned to a failing or draining node and the job will need to be restarted. I recommend emailing the server managers with your problem and the job ID to see if they have anything on their end.
+4. See if you can understand the error in the slurm-<jobID>.out file and address the problem. If you are still stuck, you can always ask ChatGPT (or other bot of choice) to explain what the error code was and how to fix it.
+5. If this is your nth error of the day, you have been staring at code all day/week, you can't figure it out even with these steps, and you don't have an immediate deadline, I suggest taking a break, getting a good night's rest, and attacking the error with fresh eyes on a new day. I have resolved many an error after I have left it and come back to it the next day.
+6. When in doubt, the answer is 42.
+     
 ## 6.5 Old Genotyping Pipeline
 This is where this pipeline diverges from Kira's. If you are dealing with microhaplotypes, short indels, or positions that are highly likely to not be variable (i.e., diagnostic loci for species and you only have one species on your plates) continue with this pipeline which will use the software ```bcftools```, ```samtools```, and ```htslib```.
 
