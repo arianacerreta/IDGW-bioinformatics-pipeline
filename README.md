@@ -230,8 +230,19 @@ This only looks at the first 8 samples so that you can inspect whether BQSR had 
 ### Call variants with Haplotype Caller 
 The following setion will call each of your recalibrate .bams seperately using your reference genome. It will then combine them into a final VCF.
 
-1. Download [run_GATK.sh](utility_files/run_GATK.sh) and edit the following
- combine variants into one .vcf final_GATK.sh
+1. Download [run_GATK.sh](utility_files/run_GATK.sh) and edit the following:
+
+    ```nano run_GATK.sh```
+   - Edit email in header
+   - Edit paths and variables in lines 15-19
+   - Optional: edit --cpus-per-task and --mem, THREADS (line 19), -Xmx##G (line 36), and --native-pair-hmm-threads (line 44)
+
+The optional edits control how many threads and how much memory the job is requesting. I currently have it set a the max that I would do comfortably on the UI servers. These setting allowed ~1000 samples to run in ~1.5 hours. IMPORTANT: if several nodes are being used on the server (check with ```squeue```` and ```sinfo -s```) then you may want to lower your requests. The tradeoff is that your job will run slower, but won't be stuck in a queue waiting for resources.
+ 
+2. Save and give permissions, if needed (```chmod 755 run_GATK.sh```)
+3. Run ```sbatch run_GATK.sh```
+
+combine variants into one .vcf final_GATK.sh
  
 ## 7 Generating panel summary stats
 summary stats generate_summary_stats.sh
