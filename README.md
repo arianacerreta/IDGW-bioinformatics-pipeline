@@ -257,7 +257,7 @@ We will do more filtering in R later, so this is the final vcf produced on the s
   
 The optional edits control how many threads and how much memory the job is requesting. I currently have it set a the max that I would do comfortably on the UI servers. These setting allowed ~1000 samples to run in ### hours. IMPORTANT: if several nodes are being used on the server (check with ```squeue``` and ```sinfo -s```) then you may want to lower your requests. The tradeoff is that your job will run slower, but won't be stuck in a queue waiting for resources.
 
-2. Save and give permissions, if needed (```chmod 755 fianl_GATK.sh```)
+2. Save and give permissions, if needed (```chmod 755 final_GATK.sh```)
 3. Run ```sbatch final_GATK.sh```
  
 ## 7 Generating panel summary stats
