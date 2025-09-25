@@ -50,7 +50,7 @@ This is how we go from all the raw sequences that are in one big fastq.gz file t
 3. Place both the `GTseq_BarcodeSplit_KML.py` and `queue_demultiplex.sh` in your scripts directory on the server.
 4. For the first time you are using the script, you will need to alter the permissions on the file:
    
-    - In your scripts directory run: ```chmod 755 GTseq_BarcodeSplit.KML.py``` and ```chmod 755 queue_demultiplex.sh```
+    - In your scripts directory run: ```chmod 755 GTseq_BarcodeSplit_KML.py``` and ```chmod 755 queue_demultiplex.sh```
 
 5. Beyond that, I would recommend that you don't edit `GTseq_BarcodeSplit_KML.py` unless you know what you are doing. Look for updates on Kira's github.
 6. Copy over the demultiplex.csv to an appropriate folder on your server account.
