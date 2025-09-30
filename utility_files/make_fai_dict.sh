@@ -3,9 +3,11 @@
 #SBATCH -C "ceph"
 #SBATCH --cpus-per-task=1
 #SBATCH -J fai_dict
-#SBATCH --mail-user email@uidaho.edu
+#SBATCH --mail-user email@example.edu
 #SBATCH --mail-type=BEGIN,END,FAIL
 
+# Load required modules
+source /usr/modules/init/bash
 module load gatk
 module load samtools
 
