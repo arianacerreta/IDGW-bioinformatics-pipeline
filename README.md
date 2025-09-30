@@ -201,23 +201,24 @@ Add RG headers to your .bam files and then sort and index them for subsequent st
 ### Base recalibration
 This recalibrates the base quality scores using known, confident SNPs. Since we run amplicon panels, these are the literature referenced SNPs for the GWAdapt Panel and the known variants fromt the Neutral Panel. The VCFs need to match the alignment you are using.
 
-1. If you don't already have a .fai and .dict files associated with your reference genome, then do steps 1-4, otherwise skip to 5. Download [make_fai_dict.sh](utility_files/make_fai_dict.sh) and edit for the followling"
+1. If you don't already have a .fai and .dict files associated with your reference genome, then do steps 1-3, otherwise skip to 4. Download [make_fai_dict.sh](utility_files/make_fai_dict.sh) and edit for the followling:
 
-       - Edit email in header
-       - Edit variables and paths in lines ___
-   
-3. Save and give permissions, if needed (```chmod 755 make_fai_dict.sh```)
-4. Run ```sbatch make_fai_dict.sh```)
-5. Now that you have your .fai and .dict files in the same directory as your genome, download the corresponding VCF file and corresponding .tbi file. Make sure the .tbi file is in the same directory as the VCF. GWAdapt (vcf); Neutral 200 loci (Clu10kTash: [known_sites.sitesonly.Clu10kTash.vcf.gz](project-specific_files/known_sites.sitesonly.Clu10kTash.vcf.gz) and [known_sites.sitesonly.Clu10kTash.vcf.gz.tbi](project-specific_files/known_sites.sitesonly.Clu10kTash.vcf.gz.tbi); CanFam3.1: known_sitesonly.CanFam3_1.vcf.gz and ___)
-6. Download [run_BQSR.sh](utility_files/run_BQSR.sh) and make a new directory for your recalibrated .bams. I recommend making sure it is not nested in your previous folder.
-7. Edit correspond shell code for the following:
+    ```nano make_fai_dict.sh```
+     - Edit email in header
+     - Edit variables and paths in lines
+       
+2. Save and give permissions, if needed (```chmod 755 make_fai_dict.sh```)
+3. Run ```sbatch make_fai_dict.sh```)
+4. Now that you have your .fai and .dict files in the same directory as your genome, download the corresponding VCF file and corresponding .tbi file. Make sure the .tbi file is in the same directory as the VCF. GWAdapt (vcf); Neutral 200 loci (Clu10kTash: [known_sites.sitesonly.Clu10kTash.vcf.gz](project-specific_files/known_sites.sitesonly.Clu10kTash.vcf.gz) and [known_sites.sitesonly.Clu10kTash.vcf.gz.tbi](project-specific_files/known_sites.sitesonly.Clu10kTash.vcf.gz.tbi); CanFam3.1: known_sitesonly.CanFam3_1.vcf.gz and ___)
+5. Download [run_BQSR.sh](utility_files/run_BQSR.sh) and make a new directory for your recalibrated .bams. I recommend making sure it is not nested in your previous folder.
+6. Edit correspond shell code for the following:
 
    ```nano run_BQSR.sh```
    - Edit email in header
    - Edit variables and paths in lines 14-18
 
-8. Save and give permissions, if needed (```chmod 755 run_BQSR.sh```)
-9. Run ```sbatch run_BQSR.sh```
+7. Save and give permissions, if needed (```chmod 755 run_BQSR.sh```)
+8. Run ```sbatch run_BQSR.sh```
 
 #### Optional:
 #### Evaluate whether base recalibration worked
