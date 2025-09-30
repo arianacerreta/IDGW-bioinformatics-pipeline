@@ -199,19 +199,25 @@ Add RG headers to your .bam files and then sort and index them for subsequent st
 5. Run ```sbatch RG_sort_index.sh```.
 
 ### Base recalibration
--For this step you also need the .fai and .dict files for the reference genome (I made a new shell script for this)
 This recalibrates the base quality scores using known, confident SNPs. Since we run amplicon panels, these are the literature referenced SNPs for the GWAdapt Panel and the known variants fromt the Neutral Panel. The VCFs need to match the alignment you are using.
 
-1. Download the corresponding VCF file and corresponding .tbi file. Make sure the .tbi file is in the same directory as the VCF. GWAdapt (vcf); Neutral 200 loci (Clu10kTash: known_sites.sitesonly.Clu10kTash.vcf.gz and known_sites.sitesonly.Clu10kTash.vcf.gz.tbi; CanFam3.1: known_sitesonly.CanFam3_1.vcf.gz and ___)
-2. Download [run_BQSR.sh](utility_files/run_BQSR.sh) and make a new directory for your recalibrated .bams. I recommend making sure it is not nested in your previous folder.
-3. Edit correspond shell code for the following:
+1. If you don't already have a .fai and .dict files associated with your reference genome, then do steps 1-4, otherwise skip to 5. Download [make_fai_dict.sh](utility_files/make_fai_dict.sh) and edit for the followling"
+
+       - Edit email in header
+       - Edit variables and paths in lines ___
+   
+3. Save and give permissions, if needed (```chmod 755 make_fai_dict.sh```)
+4. Run ```sbatch make_fai_dict.sh```)
+5. Now that you have your .fai and .dict files in the same directory as your genome, download the corresponding VCF file and corresponding .tbi file. Make sure the .tbi file is in the same directory as the VCF. GWAdapt (vcf); Neutral 200 loci (Clu10kTash: [known_sites.sitesonly.Clu10kTash.vcf.gz](project-specific_files/known_sites.sitesonly.Clu10kTash.vcf.gz) and [known_sites.sitesonly.Clu10kTash.vcf.gz.tbi](project-specific_files/known_sites.sitesonly.Clu10kTash.vcf.gz.tbi); CanFam3.1: known_sitesonly.CanFam3_1.vcf.gz and ___)
+6. Download [run_BQSR.sh](utility_files/run_BQSR.sh) and make a new directory for your recalibrated .bams. I recommend making sure it is not nested in your previous folder.
+7. Edit correspond shell code for the following:
 
    ```nano run_BQSR.sh```
    - Edit email in header
    - Edit variables and paths in lines 14-18
 
-4. Save and give permissions, if needed (```chmod 755 run_BQSR.sh```)
-5. Run ```sbatch run_BQSR.sh```
+8. Save and give permissions, if needed (```chmod 755 run_BQSR.sh```)
+9. Run ```sbatch run_BQSR.sh```
 
 #### Optional:
 #### Evaluate whether base recalibration worked
@@ -266,7 +272,16 @@ The optional edits control how many threads and how much memory the job is reque
    - Then, ```bgzip -c -d final.vcf.gz > unzipped.final.vcf```
 
 ## 7 Generating panel summary stats
-summary stats generate_summary_stats.sh
+This code give syou some general information about how the runs did on completeness by sample, read depth by locus, and on target reads.
+
+1. Download [generate_summary_stats.sh](utility_files/generate_summary_stats.sh) and edit the following:
+
+    ```nano generate_summary_stats.sh```
+   - Edit email in header
+   - Edit paths and variables in lines 17-20 and line 23
+  
+2. Save and give permissions, if needed (```chmod 755 generate_summary_stats.sh```)
+3. Run ```sbatch generate_summary_stats.sh```
 
 # HELP! My jobs keep failing!
 1. Check your paths and variables
