@@ -260,7 +260,11 @@ The optional edits control how many threads and how much memory the job is reque
 
 2. Save and give permissions, if needed (```chmod 755 final_GATK.sh```)
 3. Run ```sbatch final_GATK.sh```
- 
+4. Optional (but necessary if importing to R): Unzip your final .vcf.gz with:
+
+   -First, ```module load htslib```
+   -Then, ```bgzip -c -d final.vcf.gz > unzipped.final.vcf```
+
 ## 7 Generating panel summary stats
 summary stats generate_summary_stats.sh
 
