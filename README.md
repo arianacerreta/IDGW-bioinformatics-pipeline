@@ -205,7 +205,7 @@ This recalibrates the base quality scores using known, confident SNPs. Since we 
 
     ```nano make_fai_dict.sh```
      - Edit email in header
-     - Edit variables and paths in lines
+     - Edit variables and paths in lines 14 and 20
        
 2. Save and give permissions, if needed (```chmod 755 make_fai_dict.sh```)
 3. Run ```sbatch make_fai_dict.sh```)
