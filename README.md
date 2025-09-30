@@ -220,6 +220,8 @@ This recalibrates the base quality scores using known, confident SNPs. Since we 
 7. Save and give permissions, if needed (```chmod 755 run_BQSR.sh```)
 8. Run ```sbatch run_BQSR.sh```
 
+*For ~3000 samples, this took about 4.5 hours*
+
 #### Optional:
 #### Evaluate whether base recalibration worked
 
@@ -251,6 +253,8 @@ The optional edits control how many threads and how much memory the job is reque
 2. Save and give permissions, if needed (```chmod 755 run_GATK.sh```)
 3. Run ```sbatch run_GATK.sh```
 
+*This took about 1 hr 15 min for ~1000 samples.*
+
 #### Combine all individuals into "final" vcf
 We will do more filtering in R later, so this is the final vcf produced on the server.
 
@@ -271,6 +275,8 @@ The optional edits control how many threads and how much memory the job is reque
 
    - First, ```module load htslib```
    - Then, ```bgzip -c -d final.vcf.gz > unzipped.final.vcf```
+     
+*For ~1000 samples, this took about 1 hour to run final_GATK.sh.*
 
 ## 7 Generating panel summary stats
 This code give syou some general information about how the runs did on completeness by sample, read depth by locus, and on target reads.
@@ -283,6 +289,8 @@ This code give syou some general information about how the runs did on completen
   
 2. Save and give permissions, if needed (```chmod 755 generate_summary_stats.sh```)
 3. Run ```sbatch generate_summary_stats.sh```
+
+*This should be fast. Definitly <5 min.*
 
 # HELP! My jobs keep failing!
 1. Check your paths and variables
