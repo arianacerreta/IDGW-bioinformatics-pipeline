@@ -78,6 +78,11 @@ This will increase processing speed in subsequent steps
 
 *This will take a while (about ~1.5 hours). If you are feeling ambitious, you could write some code to zip the files in parallel, but I haven't done that yet. Once/if I do, I'll update this section.*
 
+Code: zip_parallel.sh
+    edit path
+
+    run
+
 ## 3. Trim Illumina adapter sequences and ployG tails
 This is directly from [Kira Long's pipeline](https://github.com/kiralong/gtseq_ref_align), Step 2: Trim and remove adaptors. I have provided detailed instructions on how implement her shell code to run this step.
 
@@ -113,6 +118,28 @@ This is directly from [Kira Long's pipeline](https://github.com/kiralong/gtseq_r
 8. Run ```sbatch run_fastp.sh```
 
 *This step usually goes quickly (<10 min). Double-check the output directory to see if the last sample listed in the .tsv was trimmed. For some reason, this step sometimes leaves off the last sample. If it was left off, just make a .tsv with only that sample and rerun the `run_fastp.sh` but direct it to the .tsv with only one sample listed.*
+
+## Alternate 4. Delomas et al. method
+Get mtype2 installed: follow instructions on Delomas github: for university servers, you will likely have to download it you your files and call it from there.
+download microhapWrap.py from Delomas github
+
+If using full set of loci (341): wolfAmpRef_5.fa, with associated files: wolfAmpRef_5.1.bt2, wolfAmpRef_5.2.bt2, wolfAmpRef_5.3.bt2, wolfAmpRef_5.4.bt2, wolfAmpRef_5.rev.1.bt2, wolfAmpRef_5.rev.2.bt2
+If using fecal set of loci (200): wolfAmpRef_200.fa, with associated files: wolfAmpRef_200.1.bt2, wolfAmpRef_200.2.bt2, wolfAmpRef_200.3.bt2, wolfAmpRef_200.4.bt2, wolfAmpRef_200.rev.1.bt2, wolfAmpRef_200.rev.2.bt2
+
+Create homebrew genome: you can generate in a text editer: two lines per locus. first line has name of locus in format: >Clu_CM00000009_###; second line is the locus sequence: for this panel it if 79 basepairs
+Save it as .fa
+
+Generate associated files:
+>module load bowtie2
+>bowtie2-build wolfAmpRef_5.fa wolfAmpRef_5
+
+Second argument is the prefix that will be used to make the .bt2 files
+
+Other files needed: Clu200_pos_4.txt, primers_with_adapters.txt, Clu341_pres_abs.txt
+
+For fecal: you should change
+
+
 
 ## 4. Reference genome
 This step is also directly based on [Kira Long's pipeline](https://github.com/kiralong/gtseq_ref_align), Step 3: Align to a reference genome. I have tried to write explicit instructions to elaborate on what Kira outlines in her pipeline to aid first-time users.
