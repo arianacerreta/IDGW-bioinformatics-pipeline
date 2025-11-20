@@ -1,4 +1,4 @@
-## 4. Delomas et al. method
+## 4. [Delomas et al. 2023](https://link.springer.com/article/10.1007/s12686-023-01301-x) method
 
 1. Get mtype2 installed. Follow instructions on [Delomas' github](https://github.com/delomast/microTyper). For university servers, you will likely have to download it in your files and call it from there.
 2. Download [microhapWrap.py](https://github.com/delomast/microhapWrap/blob/main/microhapWrap.py) from Delomas github
