@@ -51,3 +51,6 @@
           -x "$index_prefix" -U $fq 2> "$bams_output_dir/${sample}_bowtie2.log" | \
           samtools view -F 276 -u | samtools sort -o "$bam"
       ```
+
+7. Save and give microhapWrap.py and run_microhapWrap.sh permissions (e.g., ```chmod 755 microhapWrap.py```)
+8. If at UI, make sure you are back on the main cluster. Run ```sbatch microhapWrap.sh``` in the console.
