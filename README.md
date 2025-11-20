@@ -10,7 +10,7 @@ We no longer use the BCFTOOLS pipeline, but have left the instructions here for 
 
 If you are using the IDFG neutral wolf panel, we recommend the DELOMAS et al. 2023 pipeline. They have an entire GitHub repository for their method, but we outline how to use this pipeline with more explicit UI server specific instructions.
 
-Use the MARKDOWN (.md) files as follows:
+Follow the links to the appropriate steps below for each pipeline:
 
 ## GATK Pipeline
 
