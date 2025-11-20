@@ -24,7 +24,7 @@ Follow the links to the appropriate steps below for each pipeline:
 
 [Steps 1-3](STEPS1-3-ALL-PIPELINES.md) -> [Steps 4-5](STEP4-5-BCFTOOLS-and-GATK-PIPELINES.md) -> [Step 6](STEP6-BCFTOOLS-PIPELINE.md)
 
-
+## [Common troubleshooting](HELP-JOBS-FAILING.md) if your jobs keep failing.
 
 
 
