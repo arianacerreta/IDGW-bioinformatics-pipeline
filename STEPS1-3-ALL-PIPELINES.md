@@ -73,12 +73,22 @@ This will increase processing speed in subsequent steps
 1. Go to the directory before your individuals_fastq directory and check to see that your individual_fastqs directory is in that folder using ```ls```
 2. Use the code: ```gzip -r individual_fastqs/``` to recursively zip every file in the directory listed
 
-*This will take a while (about ~1.5 hours). If you are feeling ambitious, you could write some code to zip the files in parallel, but I haven't done that yet. Once/if I do, I'll update this section.*
+*This will take a while (about ~1.5 hours). To zip files in parallel use the following:*
+1. Download [zip_parallel.sh](utility_files/zip_parallel.sh).
+2. Edit ```zip_parallel.sh```
 
-Code: zip_parallel.sh
-    edit path
+   ```nano zip_parallel.sh```
+   - Edit header for IIDS server:
+       - #SBATCH -p eight
+       - #SBATCH -C "ceph"
+       - #SBATCH -J Clu_fastp
+       - #SBATCH --cpus-per-task=16
+       - #SBATCH --mail-user `email@exampleemail.com`
+       - #SBATCH --mail-type=BEGIN,END,FAIL
+    - Edit line 13 with path to your demultiplexed fastqs
 
-    run
+3. Save and give permissions to the shell code (```chmod 755 zip_parallel.sh```)
+4. Run ```sbatch zip_parallel.sh```
 
 ## 3. Trim Illumina adapter sequences and ployG tails
 This is directly from [Kira Long's pipeline](https://github.com/kiralong/gtseq_ref_align), Step 2: Trim and remove adaptors. I have provided detailed instructions on how implement her shell code to run this step.
