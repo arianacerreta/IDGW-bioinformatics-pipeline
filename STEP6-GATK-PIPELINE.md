@@ -81,7 +81,7 @@ We will do more filtering in R later, so this is the final vcf produced on the s
    - Edit line 36 to match line 24's path. Key things: 1) no quotation marks, 2) it has to start with ```gendb:///``` followed by the path, 3) make sure there are 3 "/" following the colon before the name of the first directory in your path.
    - Optional: edit ```--cpus-per-task``` and ```--mem``` in header, ```-Xmx##G``` (lines 23 & 34), ```--batch-size``` (line 25), and ```--reader-threads``` (line 30)
   
-The optional edits control how many threads and how much memory the job is requesting. I currently have it set a the max that I would do comfortably on the UI servers. These setting allowed ~1000 samples to run in ### hours. IMPORTANT: if several nodes are being used on the server (check with ```squeue``` and ```sinfo -s```) then you may want to lower your requests. The tradeoff is that your job will run slower, but won't be stuck in a queue waiting for resources.
+The optional edits control how many threads and how much memory the job is requesting. I currently have it set a the max that I would do comfortably on the UI servers. These setting allowed ~1000 samples to run in ~1 hour. IMPORTANT: if several nodes are being used on the server (check with ```squeue``` and ```sinfo -s```) then you may want to lower your requests. The tradeoff is that your job will run slower, but won't be stuck in a queue waiting for resources.
 
 2. Save and give permissions, if needed (```chmod 755 final_GATK.sh```)
 3. Run ```sbatch final_GATK.sh```
