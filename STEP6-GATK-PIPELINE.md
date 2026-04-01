@@ -104,4 +104,4 @@ This code give syou some general information about how the runs did on completen
 2. Save and give permissions, if needed (```chmod 755 generate_summary_stats.sh```)
 3. Run ```sbatch generate_summary_stats.sh```
 
-*This should be fast. Definitly <5 min.*
+*This should be fast. Definitely <5 min.*
