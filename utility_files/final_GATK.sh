@@ -9,7 +9,7 @@
 
 #Load the required modules
 source /usr/modules/init/bash
-module load gatk
+module load gatk/4.1.7.0
 
 #Variables and Paths
 REF="/path/to/genome/genome.fna"   #path ending in genome .fna
