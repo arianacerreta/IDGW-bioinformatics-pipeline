@@ -92,7 +92,7 @@ The optional edits control how many threads and how much memory the job is reque
      
 *For ~1000 samples, this took about 1 hour to run final_GATK.sh.*
 
-If you have multiple directories with individual vcfs (i.e., you sequenced more samples later), you will need to combine the complete dataset at this step. I edited ```final_GATK_many_dirs.sh``` to combine name map files into a master list in L23-25. If you have more than 2 unique name maps, you can add addition variables (e.g., MAPFILE3, etc.) to the section where you define variables, but don't forget to call the additional variables in line 25 (e.g., edit it to be ```cat "$MAPFILE1" "$MAPFILE2" "$MAPFILE3" > "$MAPFILEALL").
+If you have multiple directories with individual vcfs (i.e., you sequenced more samples later), you will need to combine the complete dataset at this step. I edited ```final_GATK_many_dirs.sh``` to combine name map files into a master list in L23-25. If you have more than 2 unique name maps, you can add addition variables (e.g., MAPFILE3, etc.) to the section where you define variables, but don't forget to call the additional variables in line 25 (e.g., edit it to be ```cat "$MAPFILE1" "$MAPFILE2" "$MAPFILE3" > "$MAPFILEALL"```).
 
 ## 7. Generating panel summary stats
 This code give syou some general information about how the runs did on completeness by sample, read depth by locus, and on target reads.
