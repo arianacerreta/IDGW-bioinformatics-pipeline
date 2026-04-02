@@ -13,7 +13,7 @@ module load gatk
 
 #Variables and Paths
 REF="/path/to/genome/genome.fna"   #path ending in genome .fna
-INDIVVCF="/path/to/individual/vcfs/indiv_vcfs_DPcap500"      #directory for individual vcfs
+INDIVVCF="/path/to/individual/vcfs/indiv_vcfs_DPcap500"      #directory for individual vcfs; lol just realized this is never called, but should still be good for reference
 BEDFILE="/path/to/bed/zzzz/200neutral.bed"               #path to where .bed file stored
 FINALDIR="/path/to/directory/GATK/final_vcf" #new: will be made
 MAPFILE="/path/to/map/in/indiv_vcfs_DPcap500/sample_map.txt" #path to the .txt made in the previous shell code
