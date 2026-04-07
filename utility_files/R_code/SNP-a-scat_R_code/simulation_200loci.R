@@ -21,7 +21,7 @@ reindex_markers<- function(M){
 }
 
 #####read in data#####
-hap.vcf<-read.vcfR("inputs/Test2_i004_whitelist-loci-only_DP20/populations.haps.vcf")
+hap.vcf<-read.vcfR("inputs/populations.haps.vcf") #from Test2_i004_whitelist-loci-only_DP20
 
 #####extract and format data####
 gt<-extract.gt(hap.vcf, return.alleles = FALSE, convertNA = TRUE)
