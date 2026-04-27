@@ -3,11 +3,11 @@
 ### e.g. if Locus1 for Sample1 for PlateA had a read depth of 3 and the NTC for Locus1 on Plate A had a read depth of 10, Locus1 was censored because 3 < 10*2
 ### e.g. if Locus2 for Sample1 for PlateA had a read depth of 30 and the NTC for Locus2 on Plate A had a read depth of 10, Locus2 was kept because 30 > 20
 
-#libraries
-library(vcfR)
-library(tidyverse)
-library(ggplot2)
-library(SNPfiltR)
+#libraries (base R version 4.2.3)
+library(vcfR) #version 1.15.0
+library(tidyverse) #version 2.0.0: dplyr 1.2.1, forcats 1.0.1, lubridate 1.9.5, purrr 1.2.2, readr 2.2.0, stringr 1.6.0, tibble 3.3.1, tidyr 1.3.2
+library(ggplot2) #version 4.0.2
+library(SNPfiltR) #version 1.0.1
 
 #read in unzipped .vcf created in Step 6: Genotyping of the GATK Pipeline
 vcf<- read.vcfR("../../AdaptiveOptim/GATK/CanFam3_1_final_vcf_GWAdapt_AdaptOptim/unzipped.all.gwadapt.adaptoptim.gatk.genotyped.vcf") #vcf without a DP filter from GATK
