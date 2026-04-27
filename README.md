@@ -26,5 +26,9 @@ Follow the links to the appropriate steps below for each pipeline:
 
 ## [Common troubleshooting](HELP-JOBS-FAILING.md) if your jobs keep failing.
 
+## R code
+# Wolf Adaptive Panel
+Filtering and summaries
 
+.vcf file from Step 6 of GATK Pipeline -> [Filtering by PCR negative (NTC)](utility_files/R_code/adaptive_methods/final_adapt_filter_with_PCRneg.R) -> [Replicate Error Calculations](utility_files/R_code/adaptive_methods/final_error_rates_GWAdapt.R)
 
