@@ -30,7 +30,7 @@ Follow the links to the appropriate steps below for each pipeline:
 ## Wolf Adaptive Panel
 Filtering and summaries
 
-.vcf file from Step 6 of GATK Pipeline -> [Filtering by PCR negative (NTC)](utility_files/R_code/adaptive_methods/final_adapt_filter_with_PCRneg.R) -> [Replicate Error Calculations](utility_files/R_code/adaptive_methods/final_error_rates_GWAdapt.R)
+.vcf file from Step 6 of GATK Pipeline -> [Filtering by PCR negative (NTC)](utility_files/R_code/adaptive_methods/final_adapt_filter_with_PCRneg.R) -> [Replicate Error Calculations](utility_files/R_code/adaptive_methods/final_error_rates_GWAdapt.R) -> [Apply Filtering and Remove Replicates](utility_files/R_code/adaptive_methods/final_filter_remove-reps_GWAdapt.R) -> [Calculate Allele Frequencies](utility_files/R_code/adaptive_methods/final_freq_calc_GWAdapt.R)
 
 [Summary stats](utility_files/R_code/adaptive_methods/summ_stats.R)
 
