@@ -251,4 +251,6 @@ final_locus_table <- gt_summary %>%
   )%>%
   select(Locus, REF, ALT, N, REF_freq, everything())
 
+#of note: if a locus is invariant, the REF allele will reflect the only allele present even if it is not the REF allele on CanFam3.1; check the .vcf for the true REF allele
+
 write.csv(final_locus_table, "./outputs/CanFam3.1/locus_table_CanFam3_1_GATK_final_4-28-26.csv")
