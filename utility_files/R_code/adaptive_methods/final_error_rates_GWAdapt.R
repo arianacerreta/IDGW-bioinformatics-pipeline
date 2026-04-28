@@ -25,6 +25,16 @@ popmap<- popmap_long %>%
 
 length(unique(popmap$sample_id)) #number of uniquely ID lab samples
 
+replicate_map_all <- popmap %>%
+  group_by(sample_id) %>%
+  filter(n() > 1) %>%  # only keep true replicates
+  summarise(Pairs = list(as_tibble(
+    t(combn(id, 2)), .name_repair = ~ c("Sample1", "Sample2")
+  )), .groups = "drop") %>%
+  unnest(Pairs)
+
+length(replicate_map_all$sample_id) #number of technical replicate pairs
+
 ## Scoring matching genotypes
 #make a function
 score_gt_match<-function(gt1,gt2){
