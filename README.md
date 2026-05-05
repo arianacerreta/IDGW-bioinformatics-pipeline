@@ -32,5 +32,9 @@ Filtering and summaries
 
 .vcf file from Step 6 of GATK Pipeline -> [Filtering by PCR negative (NTC)](utility_files/R_code/adaptive_methods/final_adapt_filter_with_PCRneg.R) -> [Replicate Error Calculations](utility_files/R_code/adaptive_methods/final_error_rates_GWAdapt.R) -> [Apply Filtering and Remove Replicates](utility_files/R_code/adaptive_methods/final_filter_remove-reps_GWAdapt.R) -> [Calculate Allele Frequencies](utility_files/R_code/adaptive_methods/final_freq_calc_GWAdapt.R)
 
+
+To calculate summary stats from the adaptive panel:
 [Summary stats](utility_files/R_code/adaptive_methods/summ_stats.R)
 
+To evaluate k-locus concordance:
+[K-locus code](utility_files/R_code/adaptive_methods/final_k-locus.R)
