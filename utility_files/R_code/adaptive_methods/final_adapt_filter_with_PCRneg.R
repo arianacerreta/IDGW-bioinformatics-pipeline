@@ -6,7 +6,6 @@
 #libraries (base R version 4.2.3)
 library(vcfR) #version 1.15.0
 library(tidyverse) #version 2.0.0: dplyr 1.2.1, forcats 1.0.1, lubridate 1.9.5, purrr 1.2.2, readr 2.2.0, stringr 1.6.0, tibble 3.3.1, tidyr 1.3.2
-library(ggplot2) #version 4.0.2
 library(SNPfiltR) #version 1.0.1
 
 #read in unzipped .vcf created in Step 6: Genotyping of the GATK Pipeline
