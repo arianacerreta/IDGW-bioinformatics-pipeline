@@ -1,0 +1,2 @@
+Locus	PresGeno	AbsGeno	MinReads	MaxRatioPres	MinRatioAbs
+Clu_sry	XY	XX	20000	500	10000
