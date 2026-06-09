@@ -4,8 +4,10 @@
 2. Download [microhapWrap.py](https://github.com/delomast/microhapWrap/blob/main/microhapWrap.py) from Delomas github
 3. Verify you have a homebrew reference genome. This homebrew genome is a MUCH smaller .fasta style genome that we will align to. It consists of two lines per locus. The first line is denoted with >LOCUS_name. The second line is the locus sequence. Please see the .fa files in this repository for an example.
 
-    - **Full set of neutral loci (341)**: wolfAmpRef_5.fa, with associated files -> wolfAmpRef_5.1.bt2, wolfAmpRef_5.2.bt2, wolfAmpRef_5.3.bt2, wolfAmpRef_5.4.bt2, wolfAmpRef_5.rev.1.bt2, wolfAmpRef_5.rev.2.bt2
-    - **Fecal subset of neutral loci (200)**: wolfAmpRef_200.fa, with associated files-> wolfAmpRef_200.1.bt2, wolfAmpRef_200.2.bt2, wolfAmpRef_200.3.bt2, wolfAmpRef_200.4.bt2, wolfAmpRef_200.rev.1.bt2, wolfAmpRef_200.rev.2.bt2
+    - [**Full set of neutral loci (341)**](project-specific_files/homebrew_reference_genomes/wolfAmpRef_5_OG_341loci): wolfAmpRef_5.fa, with associated files -> wolfAmpRef_5.1.bt2, wolfAmpRef_5.2.bt2, wolfAmpRef_5.3.bt2, wolfAmpRef_5.4.bt2, wolfAmpRef_5.rev.1.bt2, wolfAmpRef_5.rev.2.bt2
+    - [**Final fecal subset of neutral loci (200)**](project-specific_files/homebrew_reference_genomes/wolfAmpRef_200): wolfAmpRef_200.fa, with associated files-> wolfAmpRef_200.1.bt2, wolfAmpRef_200.2.bt2, wolfAmpRef_200.3.bt2, wolfAmpRef_200.4.bt2, wolfAmpRef_200.rev.1.bt2, wolfAmpRef_200.rev.2.bt2
+    - [**Optimization Strategy 2 (334 loci)**](project-specific_files/homebrew_reference_genomes/wolfAmpRef_334)
+    - [**Optimization Strategy 3 (70 loci)**](project-specific_files/homebrew_reference_genomes/wolfAmpRef_70)
     - If you need to generate the associated files for your unique .fa, use this code (at UI use a standalone server):
   
       ```module load bowtie2```
