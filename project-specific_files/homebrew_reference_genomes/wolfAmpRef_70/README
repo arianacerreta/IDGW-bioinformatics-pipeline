@@ -1,0 +1,11 @@
+These are the reference files used for Optimization Strategy 3 for panels using the 70 loci set.
+
+Files should contain:
+wolfAmpRef_70.fa
+wolfAmpRef_70.1.bt2
+wolfAmpRef_70.2.bt2
+wolfAmpRef_70.3.bt2
+wolfAmpRef_70.4.bt2
+wolfAmpRef_70.rev.1.bt2
+wolfAmpRef_70.rev.2.bt2
+Clu70_pos_4.txt
