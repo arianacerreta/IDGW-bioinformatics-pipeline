@@ -40,19 +40,21 @@ To evaluate k-locus concordance:
 [K-locus code](utility_files/R_code/adaptive_methods/final_k-locus.R)
 
 ## SNP a Scat
-###Filtering and matching
+### Filtering and matching
 
 Use the microhap_genotypes.csv files output from Step 4 of DELOMAS et al. 2023 Pipeline -> [Filtering and matching](utility_files/R_code/SNP-a-scat_R_code/final_matching_tissue_fecal.R)
 This code should produce: 1) Figure S.4 (mismatch rates), 2)
 
-###Summary Results
+### Summary Results
+
 Use zipped summary inputs (Ariana still needs to zip and upload) with [final_scatoptsummaries.R](utility_files/R_code/SNP-a-scat_R_code/final_scatoptsummaries.R)
 This code should produce: 1) data in Tables 2-4; 2) data in Table S.1
 
 Use qPCR_results.csv (Zenodo) and gen_data_fecal_2026-06-24.csv to summarize results based on qPCR concentration bins with [final_qpcr_bin_summary.R](utility_files/R_code/SNP-a-scat_R_code/final_qpcr_bin_summary.R)
 This code will produce data from Table 5
 
-###Simulation of PID and PIDsibs
+### Simulation of PID and PIDsibs
+
 Use populations.haps.vcf and [simulation_200loci.R](utility_files/R_code/SNP-a-scat_R_code/simulation_200loci.R)
 This code should produce Figure S.1
 
