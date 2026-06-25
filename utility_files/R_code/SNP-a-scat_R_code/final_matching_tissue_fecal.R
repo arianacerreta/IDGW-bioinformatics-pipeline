@@ -108,67 +108,67 @@ df_encoded_IDFG<- df_encoded %>% filter(Type == "IDFG")
 }
 #filter by PCR negative depths
 {
-##add in depths so that you can filter by depth
-df_encoded_depth_fecal<-df_encoded_extract_fecal %>%
-  mutate(
-    TotalDepth = case_when(
-      is.na(Allele1) | is.na(Allele2) |
-        is.na(Allele1_count) | is.na(Allele2_count) ~ NA_real_,  # missing data
-      Allele1 == Allele2 ~ Allele1_count,                      # homozygous
-      TRUE ~ Allele1_count + Allele2_count                     # heterozygous
-    ))%>%
-  select(LabID, Platei7, ExperimentID, Well, Locus, Allele1, Allele2, Allele1_count, Allele2_count,
-         TotalDepth, everything())
-
-#filter by PCRneg depths
-neg_depths<- df_encoded_depth_fecal %>%
-  filter(str_detect(LabID, "PCR")) %>% mutate(TotalDepth = replace_na(TotalDepth, 0)) %>%   # convert missing to 0
-  group_by(Platei7, Locus) %>%
-  summarize(
-    neg_max = max(TotalDepth, na.rm = TRUE), #since multiple NTC per plate, chose largest
-    .groups = "drop"
-  )
-
-df_filtered_fecal <- df_encoded_depth_fecal %>% left_join(neg_depths, by = c("Platei7", "Locus"))
-
-df_filtered_fecal <- df_filtered_fecal %>%
-  mutate(
-    TotalDepth_filtered = case_when(
-      # keep PCR negatives untouched
-      str_detect(LabID, "PCR") ~ TotalDepth,
-      # if no negative exists for this plate+locus, keep original
-      is.na(neg_max) ~ TotalDepth,
-      # censor if depth < 2 × negative depth
-      TotalDepth < 2 * neg_max ~ NA_real_,
-      TRUE ~ TotalDepth),
-    # censor genotype whenever the filtered depth is NA just in case
-    Genotype_Code = if_else(
-      is.na(TotalDepth_filtered),
-      NA_character_,
-      Genotype_Code))
-
-genotype_matrix_fecal <- df_filtered_fecal %>%
-  select(Indiv, LabID, Platei7, ExperimentID, Well, Type, Locus, Genotype_Code) %>%
-  pivot_wider(
-    names_from = Locus,
-    values_from = Genotype_Code
-  )
-
-#identify technical replicates
-rep_map <- genotype_matrix_fecal %>%
-  distinct(LabID, Well, .keep_all = FALSE) %>%  # one row per LabID x Well
-  group_by(LabID) %>%
-  mutate(Replicate = row_number()) %>%
-  ungroup()
-
-genotype_matrix_fecal <- genotype_matrix_fecal %>%
-  left_join(rep_map, by = c("LabID", "Well")) %>%
-  select(LabID, Platei7, ExperimentID, Well, Replicate, everything())
+  ##add in depths so that you can filter by depth
+  df_encoded_depth_fecal<-df_encoded_extract_fecal %>%
+    mutate(
+      TotalDepth = case_when(
+        is.na(Allele1) | is.na(Allele2) |
+          is.na(Allele1_count) | is.na(Allele2_count) ~ NA_real_,  # missing data
+        Allele1 == Allele2 ~ Allele1_count,                      # homozygous
+        TRUE ~ Allele1_count + Allele2_count                     # heterozygous
+      ))%>%
+    select(LabID, Platei7, ExperimentID, Well, Locus, Allele1, Allele2, Allele1_count, Allele2_count,
+           TotalDepth, everything())
+  
+  #filter by PCRneg depths
+  neg_depths<- df_encoded_depth_fecal %>%
+    filter(str_detect(LabID, "PCR")) %>% mutate(TotalDepth = replace_na(TotalDepth, 0)) %>%   # convert missing to 0
+    group_by(Platei7, Locus) %>%
+    summarize(
+      neg_max = max(TotalDepth, na.rm = TRUE), #since multiple NTC per plate, chose largest
+      .groups = "drop"
+    )
+  
+  df_filtered_fecal <- df_encoded_depth_fecal %>% left_join(neg_depths, by = c("Platei7", "Locus"))
+  
+  df_filtered_fecal <- df_filtered_fecal %>%
+    mutate(
+      TotalDepth_filtered = case_when(
+        # keep PCR negatives untouched
+        str_detect(LabID, "PCR") ~ TotalDepth,
+        # if no negative exists for this plate+locus, keep original
+        is.na(neg_max) ~ TotalDepth,
+        # censor if depth < 2 × negative depth
+        TotalDepth < 2 * neg_max ~ NA_real_,
+        TRUE ~ TotalDepth),
+      # censor genotype whenever the filtered depth is NA just in case
+      Genotype_Code = if_else(
+        is.na(TotalDepth_filtered),
+        NA_character_,
+        Genotype_Code))
+  
+  genotype_matrix_fecal <- df_filtered_fecal %>%
+    select(Indiv, LabID, Platei7, ExperimentID, Well, Type, Locus, Genotype_Code) %>%
+    pivot_wider(
+      names_from = Locus,
+      values_from = Genotype_Code
+    )
+  
+  #identify technical replicates
+  rep_map <- genotype_matrix_fecal %>%
+    distinct(LabID, Well, .keep_all = FALSE) %>%  # one row per LabID x Well
+    group_by(LabID) %>%
+    mutate(Replicate = row_number()) %>%
+    ungroup()
+  
+  genotype_matrix_fecal <- genotype_matrix_fecal %>%
+    left_join(rep_map, by = c("LabID", "Well")) %>%
+    select(LabID, Platei7, ExperimentID, Well, Replicate, everything())
 }
 #remove PCR negatives
 {
-#since we already used negative for quality control of genotypes, filter out  PCR negatives
-genotype_matrix_fecal<- genotype_matrix_fecal%>% filter(!str_detect(LabID, "PCR"))
+  #since we already used negative for quality control of genotypes, filter out  PCR negatives
+  genotype_matrix_fecal<- genotype_matrix_fecal%>% filter(!str_detect(LabID, "PCR"))
 }
 
 #number of unique LabIDs
@@ -536,3 +536,494 @@ clean_fecal_delomas_pipeline<- genotype_filtered_final_fecal%>%
 
 write.csv(clean_fecal_delomas_pipeline, file = paste0("./outputs/fecal_all_genos_long_", Sys.Date(), ".csv"))  
 write.csv(alleles_by_locus, file = paste0("./outputs/microhap_allele_key_",Sys.Date(), ".csv"))
+
+####use genotype_filtered_final_fecal
+#remove diagnostic loci for matching among biological replicates and harvest samples
+diag_loc<-read.csv("./inputs/neutral_diagnostic_loci_new.csv", header = TRUE)
+
+diag_loc<-diag_loc %>%
+  mutate(plain_locus = str_extract(OG_locus_ID, ".*(?=_[^_]*$)"))
+
+remove_loci<- diag_loc$plain_locus
+
+locinames<-locinames[!locinames %in% remove_loci]  
+
+gen_data_fecal<-genotype_filtered_final_fecal %>%
+  select(-LabID, -Platei7, -Well, -ExperimentID, -Replicate,-total_loci, -loci_missing,
+         -prop_missing,-Type,-mean_depth, -starts_with("Depth_"))%>%
+  select(Indiv, any_of(locinames))
+
+write.csv(gen_data_fecal, file = paste0("./outputs/gen_data_fecal_",Sys.Date(),".csv"))
+
+ind.names_fecal<-gen_data_fecal$Indiv
+gen_data_fecal$Indiv<- NULL
+
+#updated final
+genind_fecal <- df2genind(
+  gen_data_fecal,
+  ind.names = ind.names_fecal,
+  ploidy = 2,
+  sep = "",
+  NA.char = "NA"
+)
+
+#Filtering IDFG data
+{# Long to wide: one row per individual
+genotype_matrix_IDFG <- df_encoded_IDFG %>%
+  select(Indiv, Locus,Type, Genotype_Code) %>%
+  pivot_wider(
+    names_from = Locus,
+    values_from = Genotype_Code
+  ) %>%
+  mutate(
+    Indiv_long  = Indiv,
+    Indiv_short = str_extract(Indiv, "Clu.*|NTC.*"),
+    Indiv_short = if_else(is.na(Indiv_short), Indiv, Indiv_short)
+  ) %>%
+  select(Indiv, Indiv_long, Indiv_short, everything())  
+
+genotype_missing <- genotype_matrix_IDFG %>% 
+  filter(if_all(5:203, is.na))   #rows where all genotypes are NA
+
+genotype_missing <- genotype_missing$Indiv #199 individuals when we only have 200 loci
+
+#remove individuals with missing genotype and add totaldepth for depth filtering    
+snp_df_filt_IDFG <- df_encoded_IDFG %>%
+  filter(!Indiv %in% genotype_missing) %>% 
+  mutate( #add total depth information
+    TotalDepth = case_when(
+      is.na(Allele1) | is.na(Allele2) |
+        is.na(Allele1_count) | is.na(Allele2_count) ~ NA_real_,  # missing data
+      
+      Allele1 == Allele2 ~ Allele1_count,                      # homozygous
+      
+      TRUE ~ Allele1_count + Allele2_count                     # heterozygous
+    )
+  )%>%
+  select(Indiv, Locus, Type, Allele1, Allele2, Allele1_count, Allele2_count,
+         TotalDepth, everything())
+
+#replace genotype matrix
+genotype_matrix_IDFG <- snp_df_filt_IDFG %>%
+  select(Indiv, Locus, Type, Genotype_Code) %>%
+  pivot_wider(
+    names_from = Locus,
+    values_from = Genotype_Code
+  ) %>%
+  mutate(
+    Indiv_long  = Indiv,
+    Indiv_short = str_extract(Indiv, "Clu.*|NTC.*"),
+    Indiv_short = if_else(is.na(Indiv_short), Indiv, Indiv_short)
+  ) %>%
+  select(Indiv, Indiv_long, Indiv_short, everything()) 
+
+# Pivot snp_df_filt to wide format to match genotype_matrix
+depth_wide_IDFG <- snp_df_filt_IDFG %>%
+  select(Indiv, Locus, TotalDepth) %>%
+  pivot_wider(names_from = Locus, values_from = TotalDepth, names_prefix = "Depth_")
+
+# join with genotype_matrix_IDFG to filter by depth
+genotype_with_depth_IDFG <- genotype_matrix_IDFG %>%
+  left_join(depth_wide_IDFG, by = "Indiv")  
+
+# Apply filtering scheme from scat
+genotype_filtered_IDFG_final <- genotype_with_depth_IDFG %>%
+  mutate(across(starts_with("Clu_"), 
+                ~ {
+                  depth_col <- paste0("Depth_", cur_column())
+                  # If depth is below threshold, set genotype to NA
+                  ifelse(get(depth_col) < 15, NA, .x)
+                }))
+
+
+genotype_filtered_IDFG_final <- genotype_filtered_IDFG_final %>%
+  rowwise() %>%
+  mutate(
+    total_loci = length(c_across(starts_with("Clu_"))),        # total loci
+    loci_missing = sum(is.na(c_across(starts_with("Clu_")))),  # count missing
+    prop_missing = loci_missing / total_loci
+  ) %>%
+  ungroup() %>%
+  filter(prop_missing <= 0.5)
+
+gen_data_IDFG<-genotype_filtered_IDFG_final %>%
+  select(-Indiv_long, -Indiv_short,-total_loci, -loci_missing, -prop_missing,-Type,
+         -starts_with("Depth_"))%>%
+  select(Indiv, any_of(locinames))
+
+ind.names_IDFG<-gen_data_IDFG$Indiv
+gen_data_IDFG$Indiv<- NULL
+
+genind_IDFG <- df2genind(
+  gen_data_IDFG,
+  ind.names = ind.names_IDFG,
+  ploidy = 2,
+  sep = "",
+  NA.char = "NA"
+)
+}
+#merge with fecal genind
+combined <- repool(genind_fecal, genind_IDFG)
+
+#Matching among all samples (scat and harvest)
+# Assume your data is in a genind object called `gi`
+
+gi<-combined
+n_ind <- nInd(gi)
+
+#extract allele count matrix
+X <- gi@tab
+loci <- rep(locNames(gi), gi@loc.n.all)   # locus name for each allele column
+alleles <- colnames(gi@tab)               # e.g. "Clu_10.AC"
+
+# Initialize result matrices
+allele_matches <- matrix(0, n_ind, n_ind)
+shared_loci <- matrix(0, n_ind, n_ind)
+rownames(allele_matches) <- indNames(gi)
+colnames(allele_matches) <- indNames(gi)
+rownames(shared_loci) <- indNames(gi)
+colnames(shared_loci) <- indNames(gi)
+
+# Helper: extract alleles for one individual at one locus
+
+get_alleles <- function(i, loc) { 
+  cols <- which(loci == loc) 
+  counts <- X[i, cols] 
+  # If ANY allele count is NA → locus is missing return NA flag
+  if (any(is.na(counts))) return(NA) 
+  # otherwise return alleles for that individual at that locus 
+  rep(alleles[cols], counts) }
+
+# Loop through pairs of individuals: old without progress prints
+for (i in 1:(n_ind - 1)) {
+  cat("Starting individual", i, "of", n_ind, "\n")
+  
+  for (j in (i + 1):n_ind) {
+    #cat("  Pair:", i, "-", j, "\n")
+    
+    for (loc in locNames(gi)) {
+      
+      a1 <- get_alleles(i, loc)
+      a2 <- get_alleles(j, loc)
+      
+      # skip locus if either is NA (missing)
+      if (is.na(a1)[1] || is.na(a2)[1]) next 
+      
+      shared_loci[i, j] <- shared_loci[i, j] + 1
+      
+      # genotype matching rule:
+      # each allele is listed once per copy (diploid → 2)
+      # sort alleles to ignore order
+      a1_sorted <- sort(a1)
+      a2_sorted <- sort(a2)
+      
+      # get 2 it perfect match, get 1 if half match, get 0 if no match
+      if (identical(a1_sorted, a2_sorted)) {
+        match<- 2
+        
+      } else if(length(intersect(a1_sorted, a2_sorted)) > 0){
+        match<-1
+      } else {
+        match <-0
+      }
+      
+      allele_matches[i, j] <- allele_matches[i, j] + match
+    }
+    
+    allele_matches[j, i] <- allele_matches[i, j]
+    shared_loci[j, i] <- shared_loci[i, j]
+    
+    #cat("  Finished pair", i, "-", j, 
+    #   " | shared loci =", shared_loci[i,j], 
+    #  " | allele matches =", allele_matches[i,j], "\n")
+  }
+  cat("Finished individual", i, "of", n_ind, "\n")
+}
+
+saveRDS(shared_loci, file = paste0("./outputs/pairwise/shared_loci_", Sys.Date(), ".rds"))
+saveRDS(allele_matches, file = paste0("./outputs/pairwise/allele_matches_", Sys.Date(), ".rds"))
+
+
+shared_loci<- readRDS("./outputs/pairwise/shared_loci_2026-06-24.rds")
+allele_matches<-readRDS("./outputs/pairwise/allele_matches_2026-06-24.rds")
+
+# Convert to long format
+shared_long  <- melt(shared_loci, varnames=c("ind1", "ind2"), value.name="loci_shared") %>%
+  mutate(
+    ind1 = as.character(ind1),
+    ind2 = as.character(ind2)
+  ) %>%
+  filter(ind1 > ind2)
+
+allele_long  <- melt(allele_matches, varnames=c("ind1", "ind2"), value.name="allele_matches") %>%
+  mutate(
+    ind1 = as.character(ind1),
+    ind2 = as.character(ind2)
+  ) %>%
+  filter(ind1 > ind2)
+
+matching_df <- left_join(shared_long, allele_long)
+matching_df$prop_mismatching <- 1 - (matching_df$allele_matches / (2* matching_df$loci_shared)) 
+
+p1 <- ggplot(matching_df, aes(x=prop_mismatching)) + 
+  geom_histogram(binwidth=0.01, fill="blue", alpha=0.7) +
+  theme_minimal() +
+  geom_vline(aes(xintercept = 0.015), color = "black") +
+  labs(title="Distribution of Proportion Mismatched Alleles between Samples", x="Proportion Mismatched Alleles", y="Frequency")
+
+matching_tail_df <- matching_df %>% filter(prop_mismatching < 0.2)
+
+p2 <- ggplot(matching_tail_df, aes(x=prop_mismatching)) + 
+  geom_histogram(binwidth=0.005, fill="blue", alpha=0.7) +
+  geom_vline(aes(xintercept = 0.015), color = "black") +
+  theme_minimal() +
+  labs(x="Proportion Mismatched Alleles", y="Frequency")
+
+grid.arrange(p1, p2, nrow = 2)
+
+#Determine cut off with empircal dataset
+#Only allow matches between samples with at least X number genotyped loci shared between them and a mismatch rate of X
+
+#import known matches from microsatellites
+known_matches<-read.csv("./inputs/tissue-scat-samples_for-validation-and-error-calculations.csv", header = TRUE)
+
+known_matches_long<- known_matches %>%
+  pivot_longer(cols = everything(), names_to = "Scat_num", values_to = "Sample") %>%
+  filter(Sample != "") %>%                      # remove blank strings
+  separate(Sample, into = c("UI_ID", "Scat_ID"), sep = "_") %>%
+  group_by(UI_ID) %>%
+  mutate(Replicate = row_number()) %>%            # arbitrary count per individual
+  ungroup() %>%
+  select(UI_ID, Scat_ID, Replicate)
+
+matching_df_labID<-matching_df %>%
+  mutate(
+    IndivID1 = str_extract(ind1, "[^/]+$"),
+    IndivID1 = sub("\\..*$", "", IndivID1),
+    parts1 = str_split(IndivID1, "_"),
+    parts1 = map(parts1, ~ .x[!str_detect(.x, "^redo")]))%>%
+  mutate(
+    IndivID2 = str_extract(ind2, "[^/]+$"),
+    IndivID2 = sub("\\..*$", "", IndivID2),
+    parts2 = str_split(IndivID2, "_"),
+    parts2 = map(parts2, ~ .x[!str_detect(.x, "^redo")]))%>%
+  mutate(
+    LabID1   = map_chr(parts1, ~ .x[length(.x)]),
+    LabID2   = map_chr(parts2, ~ .x[length(.x)]))%>%
+  select(-parts1, -parts2, -IndivID2, -IndivID1)
+
+known_pairs<- known_matches_long%>%
+  select(UI_ID, LabID = Scat_ID) %>%              # rename for clarity
+  group_by(UI_ID) %>%
+  summarise(LabID_pairs = list(combn(LabID, 2, simplify = FALSE))) %>%
+  unnest(LabID_pairs) %>%
+  mutate(
+    LabID1 = map_chr(LabID_pairs, 1),
+    LabID2 = map_chr(LabID_pairs, 2)
+  ) %>%
+  select(-LabID_pairs)
+
+# Now join with matching_df to find empirical pairs
+empirical_matches <- matching_df_labID %>%
+  inner_join(known_pairs, by = c("LabID1", "LabID2"))
+
+empirical_matches_rev <- matching_df_labID %>%
+  inner_join(known_pairs, by = c("LabID1" = "LabID2", "LabID2" = "LabID1"))
+
+empirical_matches_all <- bind_rows(empirical_matches, empirical_matches_rev)
+
+# Now you can look at the distributions
+summary(empirical_matches_all$prop_mismatching)
+summary(empirical_matches_all$loci_shared)
+
+# Optional: plot distributions to help pick cutoffs
+ggplot(empirical_matches_all, aes(x = prop_mismatching)) + 
+  geom_histogram(binwidth = 0.005) +
+  theme_minimal()
+
+ggplot(empirical_matches_all, aes(x = loci_shared)) + 
+  geom_histogram(binwidth = 1) +
+  theme_minimal()
+
+matching_w_enough_loci <- matching_df %>% filter(loci_shared >= 50) # Only allow comparisons with at least X number loci shared (based on PID)
+
+matching_df %>% filter(loci_shared >= 50)
+
+min(matching_df$loci_shared)
+
+#max prop mismatch was 0.013 so I'm going to set it at a conservative 0.05
+matches_propmismatch <- matching_w_enough_loci %>% filter(prop_mismatching < 0.05) # A match must have mismatch of less than X% 
+
+## Cluster matching samples to individual IDs with igraph
+
+df <- matches_propmismatch[,1:2]
+
+# Step 1: Create a graph from the pairwise matches
+g <- graph_from_data_frame(df, directed = FALSE)
+
+# Step 2: Find connected components
+components <- components(g)
+
+# Step 3: Create a data frame with groups
+clusters_df <- data.frame(
+  individual = names(components$membership),
+  group = components$membership
+)
+
+# Optional: group them together for viewing
+grouped <- clusters_df %>%
+  group_by(group) %>%
+  summarise(members = paste(sort(individual), collapse = ", "))
+
+# Samples matching other samples
+head(grouped)
+
+write.csv(grouped, paste0("./outputs/pairwise/grouped_individuals_",Sys.Date(),".csv"))
+write.csv(matches_propmismatch, paste0("./outputs/pairwise/matches_promismatch_", Sys.Date(),".csv"))
+
+## Format matching samples with samples that didn't have a match
+# Add all non-matching samples
+all_samples <- data.frame(individual = as.character(unique(c(matching_w_enough_loci$ind1, matching_w_enough_loci$ind2))))
+
+grouped_long<- grouped %>%
+  separate_rows(members, sep = ",") %>%
+  mutate(
+    members = str_trim(members),
+    group = as.character(group)   
+  )
+
+#label sample types: tissue or scat; IDGW/ScatOpt4 = scat; CluIDFG = tissue; CluVAR = dog so exclude
+grouped_long <- grouped_long %>%
+  mutate(
+    sample_type = case_when(
+      str_detect(members, "CluVAR") ~ "exclude",
+      str_detect(members, "CluIDFG") ~ "tissue",
+      str_detect(members, "IDGW|ScatOpt4") ~ "scat",
+      TRUE ~ "other"
+    )
+  )
+
+all_samples2 <- all_samples %>%
+  rename(members = individual) %>%
+  mutate(
+    sample_type = case_when(
+      str_detect(members, "CluVAR") ~ "exclude",
+      str_detect(members, "CluIDFG") ~ "tissue",
+      str_detect(members, "IDGW|ScatOpt4") ~ "scat",
+      TRUE ~ "other"
+    )
+  )
+
+ungrouped <- all_samples2 %>%
+  filter(!members %in% grouped_long$members) %>%
+  mutate(group = paste0("singleton_", row_number()))%>%
+  select(group, members, sample_type)
+
+combined_unique <- bind_rows(
+  grouped_long,
+  ungrouped
+)
+
+combined_unique <- combined_unique %>%
+  filter(sample_type != "exclude")%>%
+  filter(sample_type != "other")
+
+individuals<-combined_unique %>%
+  group_by(group) %>%
+  summarise(
+    has_scat = any(sample_type == "scat"),
+    has_tissue = any(sample_type == "tissue"),
+    n_scat_samples = sum(sample_type == "scat"),
+    n_tissue_samples = sum(sample_type == "tissue"),
+    .groups = "drop"
+  )
+
+#How many unique individuals with scat
+n_scat_individuals <- individuals %>%
+  filter(has_scat) %>%
+  nrow()
+
+n_scat_individuals_df <- individuals %>%
+  filter(has_scat)
+
+#check:
+sum(n_scat_individuals_df$has_scat)
+#[1] 289
+sum(n_scat_individuals_df$has_tissue)
+#[1] 66
+
+#how many scat individuals match and tissue sample
+n_scat_with_tissue<- individuals %>%
+  filter(has_scat & has_tissue) %>%
+  nrow()
+
+###scat recaptures
+#recapture are subsequent captures after the initial detection
+#capture rates are average number of scats per individual
+scat_summary <- combined_unique %>%
+  filter(sample_type == "scat") %>%
+  group_by(group) %>%
+  summarise(
+    n_scat = n(),
+    recaptures = n_scat - 1,
+    .groups = "drop"
+  )
+
+mean_recaptures <- scat_summary %>%
+  summarise(mean_recaptures = mean(recaptures),
+            sd=sd(recaptures))
+
+mean_captures<-scat_summary %>%
+  summarise(mean_captures = mean(n_scat),
+            sd=sd(n_scat),
+            min=min(n_scat),
+            max = max(n_scat))
+
+scat_count<- scat_summary %>%
+  count(n_scat)%>%
+  arrange(n_scat)
+
+recap_counts<-scat_summary %>%
+  count(recaptures) %>%
+  arrange(recaptures)
+
+prop_singletons<-scat_summary %>%
+  summarise(
+    prop_singletons = mean(n_scat == 1)
+  )
+
+capture_plot<-ggplot(scat_count, aes(x = n_scat, y = n)) +
+  geom_col() +
+  scale_x_continuous(breaks = seq(0, max(scat_count$n_scat), by = 1)) +
+  labs(
+    title = "Capture Frequency Distribution",
+    x = "Number of Scats",
+    y = "Number of Individuals"
+  ) +
+  theme_minimal(base_size = 16)+
+  theme(
+    # remove vertical gridlines (x direction)
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    
+    # keep horizontal gridlines (y direction)
+    panel.grid.major.y = element_line(),
+    panel.grid.minor.y = element_line(),
+    
+    # ensure axis text is at least size 12
+    axis.text = element_text(size = 12),
+    axis.title = element_text(size = 12)
+  )
+
+#how many previously genotyped on microsatellites (years 2020 and earlier)
+years<-read.csv("./inputs/barcodes_fieldID.csv", header = TRUE)
+
+kept_samples_year<-kept_best%>%
+  select(LabID, Indiv)%>%
+  left_join(years, by = c("LabID" = "Barcode"))
+
+#2020 and older
+older_samples<-kept_samples_year %>%
+  filter(Year<=2020)
+
+length(older_samples$LabID) #144
