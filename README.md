@@ -32,6 +32,7 @@ Follow the links to the appropriate steps below for each pipeline:
 
 .vcf file from Step 6 of GATK Pipeline -> [Filtering by PCR negative (NTC)](utility_files/R_code/adaptive_methods/final_adapt_filter_with_PCRneg.R) -> [Replicate Error Calculations](utility_files/R_code/adaptive_methods/final_error_rates_GWAdapt.R) -> [Apply Filtering and Remove Replicates](utility_files/R_code/adaptive_methods/final_filter_remove-reps_GWAdapt.R) -> [Calculate Allele Frequencies](utility_files/R_code/adaptive_methods/final_freq_calc_GWAdapt.R)
 
+Ariana to-do: 1) Zenodo panel files, primers, etc., 2) Zenodo giant supplemental table, 3) Zenodo .vcf file
 
 To calculate summary stats from the adaptive panel:
 [Summary stats](utility_files/R_code/adaptive_methods/summ_stats.R)
@@ -67,5 +68,19 @@ Use pres_abs_genotypes.txt and ScatOpt4KnownSex.csv (Zenodo DOI: 10.5281/zenodo.
 This should produce Figure S.3
 
 ## Dispersers
+### Prep Neutral Tissue Data
+.vcf files from Step 6 of GATK Pipeline-> Filter by PCR Negative (NTC) -> Filter and prep neutral tissue data from UI and IDGF -> [filter_merge_neutral.R](utility_files/R_code/DisperserAnalyses/filter_merge_neutral.r)
 
-Use .vcf produced by [Filtering by PCR negative (NTC)](utility_files/R_code/adaptive_methods/final_adapt_filter_with_PCRneg.R)
+-Ariana to do: 1) Zenodo input .vcfs for IDFG, UI Neutral, 2) Zenodo input .vcfs, 3) upload PCR-neg code for IDFG and UI Neutral (because naming conventions are different than Adapt or Scat)
+
+### Evalulate any structuring to determine if needs to be taken into account in subsequent analyses (Supplementals)
+-Ariana to do: 1) Upload filtering_microhaps_NeutralTissue_200.R, 2) ibd.R, 3) structure_plotting.R, 4) LEA_preLFMM_analysis.R, 5) upload disperser_locations_map.R
+
+### Prep adaptive genotypes with neutral genotypes
+Use .vcf produced by [Filtering by PCR negative (NTC)](utility_files/R_code/adaptive_methods/final_adapt_filter_with_PCRneg.R) -> Filter and merge with neutral panel data [filter_merge_adapt_write_vcf.R](utility_files/R_code/DisperserAnalyses/filter_merge_adapt_write_vcf.r)
+
+### GLM 
+-Ariana to do: 1) clean and upload glm.R
+
+### LFMM (Supplementals)
+-Ariana to do: 1) update PLINK with 29June2026 input, 2) clean and update lfmm.R
