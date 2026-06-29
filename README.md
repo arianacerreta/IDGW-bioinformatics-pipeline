@@ -65,3 +65,7 @@ This code should produce Figure S.2
 
 Use pres_abs_genotypes.txt and ScatOpt4KnownSex.csv (Zenodo DOI: 10.5281/zenodo.20799436) and [final_sex_threshold.R](utility_files/R_code/SNP-a-scat_R_code/final_sex_threshold.R)
 This should produce Figure S.3
+
+## Dispersers
+
+Use .vcf produced by [Filtering by PCR negative (NTC)](utility_files/R_code/adaptive_methods/final_adapt_filter_with_PCRneg.R)
